@@ -5,6 +5,12 @@ import releaseImg from "../assets/release.jpg";
 import adhesiveImg from "../assets/adhesive.jpg";
 import coatingImg from "../assets/coating.jpg";
 
+function useScrollToTop() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+}
+
 /* ─── SEO: inject meta tags ─────────────────────────────────────────────── */
 function useSEO({ title, description, keywords }) {
   useEffect(() => {
@@ -243,6 +249,7 @@ function CategoryCard({ cat, index, onClick }) {
 
 /* ─── Main Component ────────────────────────────────────────────────────── */
 export default function Products() {
+  useScrollToTop();
   useSEO({
     title: "Industrial Products — Chemtech Specialty | Waxes, Release Agents, Adhesives & Coatings",
     description: "Chemtech Specialty manufactures high-performance investment casting waxes, release agents, industrial adhesives, metal coatings, and custom coating solutions for precision manufacturing.",

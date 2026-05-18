@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 /* ─────────────────────────────────────────────
    1. SCROLL TO TOP ON EVERY PAGE VISIT
@@ -97,6 +99,7 @@ function Counter({ to, suffix = "" }) {
 
 /* ── Hero SVG Illustration ── */
 function HeroIllustration() {
+  
   return (
     <svg
       viewBox="0 0 560 400"
@@ -298,7 +301,7 @@ const process = [
 export default function About() {
   // ✅ Always scroll to top when this page mounts
   useScrollToTop();
-
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -544,15 +547,34 @@ export default function About() {
               </p>
             </Reveal>
             <Reveal direction="up" delay={0.24}>
-              <a
-                href="/contact"
-                style={{ position: "relative", display: "inline-block", background: "#3B82F6", color: "#fff", fontSize: 14, fontWeight: 600, padding: "13px 32px", borderRadius: 8, textDecoration: "none", letterSpacing: "0.02em", transition: "background 0.2s, transform 0.2s" }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#2563EB"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#3B82F6"; e.currentTarget.style.transform = "translateY(0)"; }}
+              <button
+                onClick={() => navigate("/contact")}
+                style={{
+                  position: "relative",
+                  display: "inline-block",
+                  background: "#3B82F6",
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  padding: "13px 32px",
+                  borderRadius: 8,
+                  border: "none",
+                  cursor: "pointer",
+                  letterSpacing: "0.02em",
+                  transition: "background 0.2s, transform 0.2s"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#2563EB";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#3B82F6";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
                 aria-label="Contact Chemtech Specialty"
               >
                 Get in Touch →
-              </a>
+              </button>
             </Reveal>
           </div>
         </Reveal>

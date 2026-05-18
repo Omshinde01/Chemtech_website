@@ -1,8 +1,15 @@
-import React from "react";
+import React,{useEffect} from "react";
+
 import { motion } from "framer-motion";
 
-const Contact = () => {
+function useScrollToTop() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+}
 
+const Contact = () => {
+  useScrollToTop();
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
     visible: {
