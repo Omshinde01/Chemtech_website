@@ -1,14 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 import wax from "../assets/wax.png";
 import release from "../assets/release.jpg";
 import adhesive from "../assets/adhesive.jpg";
 import coating from "../assets/coating.jpg";
 import custom from "../assets/custom.jpg";
+
 const products = [
   {
     title: "Investment Casting Waxes",
     desc: "High-precision waxes designed for smooth surface finish and dimensional accuracy in casting applications.",
-    img: wax,},
+    img: wax,
+  },
   {
     title: "Releasing Agents",
     desc: "Advanced release solutions ensuring clean separation and improved mold life across industrial processes.",
@@ -32,12 +36,16 @@ const products = [
 ];
 
 const Products = () => {
+
+  const navigate = useNavigate();
+
   return (
     <section id="products" className="bg-[#0B1C2C] py-24 px-6 text-white">
 
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-4xl font-bold">Our Product Solutions</h2>
+
         <p className="mt-4 text-gray-400">
           Delivering high-performance materials engineered for industrial precision and reliability.
         </p>
@@ -49,8 +57,10 @@ const Products = () => {
         {products.map((item, i) => (
           <div
             key={i}
-            className="relative group h-72 rounded-xl overflow-hidden border border-white/10"
+            onClick={() => navigate("/products")}
+            className="relative group h-72 rounded-xl overflow-hidden border border-white/10 cursor-pointer"
           >
+
             {/* Image */}
             <img
               src={item.img}
@@ -64,6 +74,7 @@ const Products = () => {
             {/* Content */}
             <div className="absolute bottom-6 left-6 right-6">
               <h3 className="text-lg font-semibold">{item.title}</h3>
+
               <p className="text-sm text-gray-300 mt-2 opacity-90">
                 {item.desc}
               </p>
@@ -72,10 +83,12 @@ const Products = () => {
                 Learn More →
               </div>
             </div>
+
           </div>
         ))}
 
       </div>
+
     </section>
   );
 };

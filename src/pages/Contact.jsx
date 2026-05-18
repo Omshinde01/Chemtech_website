@@ -155,7 +155,7 @@ const Contact = () => {
                 </p>
 
                 <p className="mt-1 text-gray-300">
-                  +91 98765 43210
+                  +91 86687 58151
                 </p>
               </div>
 

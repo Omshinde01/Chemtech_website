@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { useNavigate } from "react-router-dom";
+import Heromain from "../assets/Heromain.jpg"
 
 const Hero = () => {
   const contentRef = useRef(null);
@@ -26,7 +27,7 @@ const Hero = () => {
 
       {/* Optimized Background */}
       <img
-        src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=60&w=1200&auto=format&fit=crop"
+        src={Heromain}
         alt="Industrial manufacturing"
         loading="eager"
         className="absolute inset-0 w-full h-full object-cover"
