@@ -35,7 +35,7 @@ const businessSchema = {
   name: "Chemtech Specialty",
   alternateName: "Chemtech Specialty Chemicals & Materials",
   url: SITE_URL,
-  logo: `${SITE_URL}/favicon.svg`,
+  logo: `${SITE_URL}/logo.png`,
   image: OG_IMAGE,
   description:
     "Manufacturer and supplier of high-performance investment casting waxes, industrial mold release agents, rubber-to-metal bonding adhesives, and protective metal coatings.",

@@ -12,7 +12,7 @@ const homeSchema = [
     "@id": "https://chemtechspecialty.com/#organization",
     name: "Chemtech Specialty",
     url: "https://chemtechspecialty.com",
-    logo: "https://chemtechspecialty.com/favicon.svg",
+    logo: "https://chemtechspecialty.com/logo.png",
     image: "https://chemtechspecialty.com/og-image.jpg",
     description:
       "Manufacturer and supplier of high-performance investment casting waxes, industrial mold release agents, rubber-to-metal bonding adhesives, and protective metal coatings.",
