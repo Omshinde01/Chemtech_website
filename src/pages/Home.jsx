@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
 import Products from "../components/Products";
+import CastingJourney from "../components/CastingJourney";
 import Process from "../components/Process";
 import Industries from "../components/Industries";
 import Footer from "../components/Footer";
@@ -12,6 +13,7 @@ const Home = () => {
 
       <Hero />
       <Products />
+      <CastingJourney />
       <Process />
       <Industries />
       <CTA />
