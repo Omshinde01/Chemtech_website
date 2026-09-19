@@ -35,28 +35,28 @@ const Footer = () => {
           <h3 className="text-white font-semibold mb-4 text-base">Industrial Products</h3>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link to="/products?category=waxes" className="hover:text-blue-400 transition flex items-center gap-1.5">
+              <Link to="/investment-casting-wax" className="hover:text-blue-400 transition flex items-center gap-1.5">
                 <span className="text-blue-500 font-mono text-xs">01</span> Investment Casting Waxes
               </Link>
             </li>
             <li>
-              <Link to="/products?category=release" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-cyan-400 font-mono text-xs">02</span> Mold Release Agents
+              <Link to="/release-agents" className="hover:text-blue-400 transition flex items-center gap-1.5">
+                <span className="text-cyan-400 font-mono text-xs">02</span> Release Agents
               </Link>
             </li>
             <li>
-              <Link to="/products?category=adhesive" className="hover:text-blue-400 transition flex items-center gap-1.5">
+              <Link to="/adhesives" className="hover:text-blue-400 transition flex items-center gap-1.5">
                 <span className="text-amber-400 font-mono text-xs">03</span> Industrial Adhesives
               </Link>
             </li>
             <li>
-              <Link to="/products?category=coating" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-emerald-400 font-mono text-xs">04</span> Metal Protective Coatings
+              <Link to="/coatings" className="hover:text-blue-400 transition flex items-center gap-1.5">
+                <span className="text-emerald-400 font-mono text-xs">04</span> Protective Metal Coatings
               </Link>
             </li>
             <li>
-              <Link to="/products?category=custom" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-purple-400 font-mono text-xs">05</span> Custom Chemical Formulations
+              <Link to="/products" className="hover:text-blue-400 transition flex items-center gap-1.5">
+                <span className="text-purple-400 font-mono text-xs">05</span> All Products Catalogue
               </Link>
             </li>
           </ul>
@@ -68,7 +68,7 @@ const Footer = () => {
           <address className="not-italic space-y-2.5 text-sm text-gray-300">
             <p>
               <span className="text-gray-500 block text-xs uppercase font-medium">Headquarters & Works</span>
-              Nashik, Maharashtra, India
+              Shinde House, Sahyadrinagar, Vadner Dumala, Nashik - 422401, Maharashtra, India
             </p>
             <p>
               <span className="text-gray-500 block text-xs uppercase font-medium">Direct Inquiries</span>
@@ -77,9 +77,9 @@ const Footer = () => {
               </a>
             </p>
             <p>
-              <span className="text-gray-500 block text-xs uppercase font-medium">Phone / WhatsApp</span>
+              <span className="text-gray-500 block text-xs uppercase font-medium">Phone</span>
               <a href="tel:+918668758151" className="hover:text-blue-400 transition">
-                +91 86687 58151
+                +91 8668758151
               </a>
             </p>
             <p className="text-xs text-gray-400 pt-1">

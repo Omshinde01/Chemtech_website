@@ -168,7 +168,7 @@ export default function CastingJourney() {
                   <ul className="mt-2 space-y-2">
                     {s.materials.map((m) => (
                       <li key={m.name}>
-                        <Link to="/products" className="group flex items-baseline justify-between gap-3 rounded-lg border border-blue-400/20 bg-blue-500/10 px-3 py-2 transition hover:border-blue-400/50 hover:bg-blue-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+                        <Link to={m.link || "/investment-casting-wax"} className="group flex items-baseline justify-between gap-3 rounded-lg border border-blue-400/20 bg-blue-500/10 px-3 py-2 transition hover:border-blue-400/50 hover:bg-blue-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                           <span className="text-sm font-medium text-blue-200">{m.name}</span>
                           <span className="text-right text-xs text-gray-400">{m.note}</span>
                         </Link>
@@ -181,7 +181,7 @@ export default function CastingJourney() {
               {stage === STAGES.length - 1 && (
                 <div className="mt-auto flex flex-col gap-3 pt-6 sm:flex-row">
                   <Link to="/contact" className="rounded-lg bg-blue-600 px-5 py-3 text-center font-medium transition hover:bg-blue-700">Get a quote</Link>
-                  <Link to="/products" className="rounded-lg border border-white/20 px-5 py-3 text-center transition hover:bg-white/10">Explore waxes</Link>
+                  <Link to="/investment-casting-wax" className="rounded-lg border border-white/20 px-5 py-3 text-center transition hover:bg-white/10">Explore waxes</Link>
                 </div>
               )}
             </div>

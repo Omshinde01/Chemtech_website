@@ -45,8 +45,37 @@ app.post("/api/quote", quoteLimiter, async (req, res) => {
 // In production, serve the built React app from the same server.
 const dist = path.join(__dirname, "..", "dist");
 if (fs.existsSync(dist)) {
+  // 301 redirect legacy query URLs to clean canonical URLs
+  app.get("/products", (req, res, next) => {
+    const cat = req.query.category;
+    if (cat === "waxes") return res.redirect(301, "/investment-casting-wax");
+    if (cat === "release") return res.redirect(301, "/release-agents");
+    if (cat === "adhesive") return res.redirect(301, "/adhesives");
+    if (cat === "coating") return res.redirect(301, "/coatings");
+    next();
+  });
+
   app.use(express.static(dist));
-  app.use((req, res, next) => (req.method === "GET" && !req.path.startsWith("/api") ? res.sendFile(path.join(dist, "index.html")) : next()));
+
+  // Serve route-specific prerendered HTML or return HTTP 404 with 404.html
+  app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api")) return next();
+
+    const cleanPath = req.path.replace(/^\//, "").replace(/\/$/, "");
+    const candidatePath = path.join(dist, cleanPath, "index.html");
+
+    if (cleanPath && fs.existsSync(candidatePath)) {
+      return res.sendFile(candidatePath);
+    }
+
+    // If requested path is not found, serve 404.html with genuine HTTP 404
+    const notFoundPage = path.join(dist, "404.html");
+    if (fs.existsSync(notFoundPage)) {
+      return res.status(404).sendFile(notFoundPage);
+    }
+
+    res.status(404).sendFile(path.join(dist, "index.html"));
+  });
 }
 
 // Malformed JSON etc.

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SEO from "../components/SEO";
 
 
 /* ─────────────────────────────────────────────
@@ -303,6 +304,16 @@ export default function About() {
   useScrollToTop();
   const navigate = useNavigate();
   return (
+    <>
+      <SEO
+        title="About Chemtech Specialty | Industrial Material Solutions | Nashik, India"
+        description="Learn about Chemtech Specialty, a manufacturer of industrial specialty materials including investment casting waxes, release agents, adhesives, and protective coatings. Based in Nashik, Maharashtra."
+        canonicalPath="/about"
+        breadcrumbs={[
+          { name: "Home", item: "/" },
+          { name: "About Chemtech Specialty", item: "/about" },
+        ]}
+      />
     <div
       style={{
         background: "#071523",
@@ -585,5 +596,6 @@ export default function About() {
         <p style={{ margin: 0 }}>Chemtech Specialty — Engineered materials for industrial performance</p>
       </div>
     </div>
+    </>
   );
 }

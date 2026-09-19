@@ -10,9 +10,9 @@ export const STAGES = [
     matters:
       "Every dimension of the metal part is inherited from this wax. Fine detail, surface finish and stability are decided here, before anything is cast.",
     materials: [
-      { name: "Unfilled Wax", note: "Fine detail and excellent mold filling" },
-      { name: "Filled Wax", note: "Rigidity for complex, thin sections" },
-      { name: "Water Soluble Wax", note: "Cores for internal channels" },
+      { name: "Unfilled Wax", note: "Fine detail and excellent mold filling", link: "/investment-casting-wax/unfilled-wax" },
+      { name: "Filled Wax", note: "Rigidity for complex, thin sections", link: "/investment-casting-wax/filled-wax" },
+      { name: "Water Soluble Wax", note: "Cores for internal channels", link: "/investment-casting-wax/water-soluble-wax" },
     ],
     hotspots: [{ pos: [1.25, 0.45, 0.6], label: "Thin blades", text: "Thin, curved sections only come out right if the wax fills the die completely." }],
   },
@@ -24,8 +24,8 @@ export const STAGES = [
     matters:
       "A clean surface and a solid joint keep defects from being copied into the metal. Sprues also carry several patterns on one tree in production.",
     materials: [
-      { name: "Repair Wax", note: "Corrects knit lines and handling marks" },
-      { name: "Sticky Wax", note: "Fast-setting joints for pattern trees" },
+      { name: "Repair Wax", note: "Corrects knit lines and handling marks", link: "/investment-casting-wax/repair-wax" },
+      { name: "Sticky Wax", note: "Fast-setting joints for pattern trees", link: "/investment-casting-wax/sticky-wax" },
     ],
     hotspots: [
       { pos: [0, 1.55, 0], label: "Sprue joint", text: "Sticky wax bonds the pattern to the sprue." },
@@ -39,7 +39,7 @@ export const STAGES = [
     summary: "The assembly is dipped in ceramic slurry and coated with fine sand, layer after layer, until a strong shell forms.",
     matters:
       "The pattern is handled and dipped repeatedly. If it flexes or deforms, the cavity inside the shell is wrong for good.",
-    materials: [{ name: "Filled Wax", note: "Resists deformation during handling" }],
+    materials: [{ name: "Filled Wax", note: "Resists deformation during handling", link: "/investment-casting-wax/filled-wax" }],
     hotspots: [{ pos: [1.5, 0.55, -0.4], label: "Shell layers", text: "Each dip adds a layer. The shell copies the wax surface, so wax finish carries through." }],
   },
   {
@@ -49,7 +49,7 @@ export const STAGES = [
     summary: "The shell is heated, the wax melts and drains out, and a hollow ceramic mold is left behind. The view is cut away.",
     matters:
       "Wax has to leave completely and cleanly. Residue or expansion problems show up later as casting defects.",
-    materials: [{ name: "Water Soluble Wax", note: "Cores dissolve rapidly without residue" }],
+    materials: [{ name: "Water Soluble Wax", note: "Cores dissolve rapidly without residue", link: "/investment-casting-wax/water-soluble-wax" }],
     hotspots: [{ pos: [0, 0.75, 0.9], label: "Empty cavity", text: "The space the wax occupied is now the exact shape of the part." }],
   },
   {

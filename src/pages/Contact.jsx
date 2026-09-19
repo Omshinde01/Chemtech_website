@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LoaderCircle, CircleCheck, CircleAlert, Send } from "lucide-react";
+import SEO from "../components/SEO";
 
 // Same-origin by default. Set VITE_API_URL only if the API is hosted on another domain.
 const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/quote`;
@@ -26,8 +27,10 @@ function useScrollToTop() {
 
 const Contact = () => {
   useScrollToTop();
+  const [searchParams] = useSearchParams();
+  const prefilledProduct = searchParams.get("product") || "";
 
-  const [values, setValues] = useState({ name: "", email: "", company: "", message: "", website: "" });
+  const [values, setValues] = useState({ name: "", email: "", company: "", message: prefilledProduct ? `Inquiry about: ${prefilledProduct}\n\n` : "", website: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [serverError, setServerError] = useState("");
@@ -79,6 +82,16 @@ const Contact = () => {
   };
 
   return (
+    <>
+      <SEO
+        title="Contact Chemtech Specialty | Request a Quote | Nashik, India"
+        description="Contact Chemtech Specialty for investment casting waxes, release agents, adhesives, and protective coatings. Our engineers are available for technical consultation, sample requests, and quotes."
+        canonicalPath="/contact"
+        breadcrumbs={[
+          { name: "Home", item: "/" },
+          { name: "Contact & Request a Quote", item: "/contact" },
+        ]}
+      />
     <div className="bg-[#0B1C2C] text-white min-h-screen">
 
       {/* TOP INTRO */}
@@ -294,6 +307,7 @@ const Contact = () => {
       </motion.section>
 
     </div>
+    </>
   );
 };
 

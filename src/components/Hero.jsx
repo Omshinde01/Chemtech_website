@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { useNavigate } from "react-router-dom";
-import Heromain from "../assets/Heromain.jpg"
+import { Link } from "react-router-dom";
+import Heromain from "../assets/Heromain.jpg";
 
 const Hero = () => {
   const contentRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     requestAnimationFrame(() => {
@@ -28,7 +27,7 @@ const Hero = () => {
       {/* Optimized Background */}
       <img
         src={Heromain}
-        alt="Industrial manufacturing"
+        alt="Chemtech Specialty precision industrial material manufacturing"
         loading="eager"
         className="absolute inset-0 w-full h-full object-cover"
       />
@@ -61,20 +60,20 @@ const Hero = () => {
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
 
           {/* CONTACT PAGE */}
-          <button
-            onClick={() => navigate("/contact")}
-            className="bg-blue-600 px-6 py-3 rounded-lg text-white font-medium hover:bg-blue-700 transition"
+          <Link
+            to="/contact"
+            className="bg-blue-600 px-6 py-3 rounded-lg text-white font-medium hover:bg-blue-700 transition inline-block text-center"
           >
             Get a Quote
-          </button>
+          </Link>
 
           {/* PRODUCTS PAGE */}
-          <button
-            onClick={() => navigate("/products")}
-            className="border border-gray-300 px-6 py-3 rounded-lg text-white hover:bg-gray-700 transition"
+          <Link
+            to="/products"
+            className="border border-gray-300 px-6 py-3 rounded-lg text-white hover:bg-gray-700 transition inline-block text-center"
           >
             View Products
-          </button>
+          </Link>
 
         </div>
       </div>

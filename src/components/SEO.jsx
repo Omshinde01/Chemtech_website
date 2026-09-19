@@ -10,8 +10,10 @@ export default function SEO({
   canonicalPath = "",
   ogType = "website",
   ogImage = DEFAULT_IMAGE,
+  ogImageAlt = "Chemtech Specialty Industrial Precision Materials",
   schema = null,
   breadcrumbs = null,
+  robots = "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
 }) {
   useEffect(() => {
     // 1. Page Title
@@ -31,12 +33,18 @@ export default function SEO({
       el.setAttribute("content", content);
     };
 
-    // Helper to create or update link tags
-    const setLink = (rel, href) => {
-      let el = document.querySelector(`link[rel="${rel}"]`);
+    // Helper to create or update canonical link — removes the static
+    // index.html canonical and replaces with a managed one per route.
+    const setCanonical = (href) => {
+      // Remove static canonical (from index.html) if it exists
+      const staticEl = document.querySelector('link[rel="canonical"]:not([data-managed])');
+      if (staticEl) staticEl.remove();
+      // Create or update managed canonical
+      let el = document.querySelector('link[rel="canonical"][data-managed]');
       if (!el) {
         el = document.createElement("link");
-        el.setAttribute("rel", rel);
+        el.setAttribute("rel", "canonical");
+        el.setAttribute("data-managed", "true");
         document.head.appendChild(el);
       }
       el.setAttribute("href", href);
@@ -47,8 +55,8 @@ export default function SEO({
     // Standard SEO Tags
     setMeta("name", "description", description);
     if (keywords) setMeta("name", "keywords", keywords);
-    setMeta("name", "robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
-    setLink("canonical", canonicalUrl);
+    setMeta("name", "robots", robots);
+    setCanonical(canonicalUrl);
 
     // OpenGraph
     setMeta("property", "og:title", title);
@@ -56,6 +64,7 @@ export default function SEO({
     setMeta("property", "og:url", canonicalUrl);
     setMeta("property", "og:type", ogType);
     setMeta("property", "og:image", ogImage);
+    setMeta("property", "og:image:alt", ogImageAlt);
     setMeta("property", "og:site_name", "Chemtech Specialty");
     setMeta("property", "og:locale", "en_US");
 
@@ -64,6 +73,7 @@ export default function SEO({
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", description);
     setMeta("name", "twitter:image", ogImage);
+    setMeta("name", "twitter:image:alt", ogImageAlt);
 
     // Dynamic JSON-LD Structured Data
     const scriptId = "dynamic-seo-schema";
@@ -71,7 +81,7 @@ export default function SEO({
 
     const schemaGraph = [];
 
-    // Default Breadcrumbs if provided or auto-generated
+    // BreadcrumbList schema
     if (breadcrumbs && breadcrumbs.length > 0) {
       schemaGraph.push({
         "@type": "BreadcrumbList",
@@ -79,7 +89,9 @@ export default function SEO({
           "@type": "ListItem",
           "position": idx + 1,
           "name": crumb.name,
-          "item": crumb.item.startsWith("http") ? crumb.item : `${SITE_URL}${crumb.item}`,
+          "item": crumb.item.startsWith("http")
+            ? crumb.item
+            : `${SITE_URL}${crumb.item}`,
         })),
       });
     }
@@ -107,7 +119,7 @@ export default function SEO({
     } else if (scriptEl) {
       scriptEl.remove();
     }
-  }, [title, description, keywords, canonicalPath, ogType, ogImage, schema, breadcrumbs]);
+  }, [title, description, keywords, canonicalPath, ogType, ogImage, ogImageAlt, robots, schema, breadcrumbs]);
 
   return null;
 }

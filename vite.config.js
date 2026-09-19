@@ -8,4 +8,18 @@ export default defineConfig({
     // In development, forward /api calls to the Express server (npm run server)
     proxy: { '/api': 'http://localhost:5000' },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three') || id.includes('node_modules/@react-three')) {
+            return 'three-vendor';
+          }
+          if (id.includes('node_modules/gsap') || id.includes('node_modules/framer-motion')) {
+            return 'animation-vendor';
+          }
+        },
+      },
+    },
+  },
 })
