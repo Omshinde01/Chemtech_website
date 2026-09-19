@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://chemtechspecialty.com
+
+# Sitemaps
+Sitemap: https://chemtechspecialty.com/sitemap.xml

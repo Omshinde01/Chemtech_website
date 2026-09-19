@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Homepage -->
+  <url>
+    <loc>https://chemtechspecialty.com/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+    <image:image>
+      <image:loc>https://chemtechspecialty.com/og-image.png</image:loc>
+      <image:title>Chemtech Specialty - Industrial Precision Materials</image:title>
+      <image:caption>High-performance waxes, release agents, industrial adhesives, and protective metal coatings</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Products Main Page -->
+  <url>
+    <loc>https://chemtechspecialty.com/products</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://chemtechspecialty.com/og-image.png</image:loc>
+      <image:title>Complete Industrial Product Catalogue - Chemtech Specialty</image:title>
+    </image:image>
+  </url>
+
+  <!-- Product Category: Investment Casting Waxes -->
+  <url>
+    <loc>https://chemtechspecialty.com/products?category=waxes</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Product Category: Release Agents -->
+  <url>
+    <loc>https://chemtechspecialty.com/products?category=release</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Product Category: Industrial Adhesives -->
+  <url>
+    <loc>https://chemtechspecialty.com/products?category=adhesive</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Product Category: Metal Coatings -->
+  <url>
+    <loc>https://chemtechspecialty.com/products?category=coating</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Product Category: Custom Formulations -->
+  <url>
+    <loc>https://chemtechspecialty.com/products?category=custom</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- About Us -->
+  <url>
+    <loc>https://chemtechspecialty.com/about</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Contact & Request a Quote -->
+  <url>
+    <loc>https://chemtechspecialty.com/contact</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+</urlset>
