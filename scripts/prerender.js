@@ -16,6 +16,17 @@ import {
   OG_IMAGE,
   categories,
 } from "../src/data/productData.js";
+import { STAGES as waxStages } from "../src/components/castingStages.js";
+import { STAGES as releaseStages } from "../src/components/releaseStages.js";
+import { STAGES as adhesiveStages } from "../src/components/adhesiveStages.js";
+import { STAGES as coatingStages } from "../src/components/coatingStages.js";
+
+const STAGES_BY_CAT = {
+  "investment-casting-wax": { stages: waxStages, title: "Investment Casting Process Simulation & Materials" },
+  "release-agents": { stages: releaseStages, title: "Precision Mold Release & Demolding Process Simulation" },
+  "adhesives": { stages: adhesiveStages, title: "High-Performance Structural Bonding Process Simulation" },
+  "coatings": { stages: coatingStages, title: "Protective Industrial Coating Application Simulation" },
+};
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, "../dist");
@@ -752,6 +763,51 @@ categories.forEach((cat) => {
             .join("")}
         </div>
       </section>
+
+      ${
+        STAGES_BY_CAT[cat.slug]
+          ? `
+      <section aria-labelledby="cat-process-stages" style="margin-bottom:56px;padding:32px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;">
+        <span style="font-size:11px;font-weight:700;color:${cat.accent};text-transform:uppercase;letter-spacing:0.1em;display:inline-block;margin-bottom:8px;">Interactive Technical Simulation</span>
+        <h2 id="cat-process-stages" style="font-size:22px;font-weight:700;color:#F0F6FF;margin:0 0 12px;">
+          ${STAGES_BY_CAT[cat.slug].title}
+        </h2>
+        <p style="font-size:14px;color:#7A9BB8;max-width:700px;line-height:1.7;margin:0 0 24px;">
+          Engineering walkthrough demonstrating how Chemtech specialty materials prevent defects and optimize production yields at each stage.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+          ${STAGES_BY_CAT[cat.slug].stages
+            .map(
+              (st, i) => `
+            <div style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;">
+              <p style="font-size:11px;font-weight:700;color:${cat.accent};margin:0 0 6px;">Stage 0${i + 1} &bull; ${st.short}</p>
+              <h3 style="font-size:16px;color:#ffffff;margin:0 0 8px;">${st.title}</h3>
+              <p style="font-size:13px;color:#7A9BB8;line-height:1.6;margin:0 0 12px;">${st.summary}</p>
+              <p style="font-size:12px;color:#A8C0D6;line-height:1.6;margin:0 0 12px;"><strong>Why it matters:</strong> ${st.matters}</p>
+              ${
+                st.materials.length > 0
+                  ? `
+                <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;font-size:12px;">
+                  <span style="color:#5A7A96;font-size:10px;text-transform:uppercase;font-weight:700;">Chemtech Materials at this stage:</span>
+                  ${st.materials
+                    .map(
+                      (m) =>
+                        `<a href="${m.link}" style="display:block;color:${cat.accent};text-decoration:none;margin-top:4px;font-weight:600;">${m.name} <span style="color:#7A9BB8;font-weight:400;">&ndash; ${m.note}</span></a>`
+                    )
+                    .join("")}
+                </div>
+              `
+                  : ""
+              }
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      </section>
+      `
+          : ""
+      }
 
       <section aria-labelledby="other-categories" style="padding-top:40px;border-top:1px solid rgba(255,255,255,0.08);">
         <h2 id="other-categories" style="font-size:18px;font-weight:700;color:#F0F6FF;margin:0 0 16px;">Other Product Categories</h2>

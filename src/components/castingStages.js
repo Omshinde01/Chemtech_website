@@ -26,6 +26,7 @@ export const STAGES = [
     materials: [
       { name: "Repair Wax", note: "Corrects knit lines and handling marks", link: "/investment-casting-wax/repair-wax" },
       { name: "Sticky Wax", note: "Fast-setting joints for pattern trees", link: "/investment-casting-wax/sticky-wax" },
+      { name: "Wax Pattern Cleaner & Activator", note: "Removes release residues; activates surface for slurry", link: "/investment-casting-wax/wax-pattern-cleaner-activator" },
     ],
     hotspots: [
       { pos: [0, 1.55, 0], label: "Sprue joint", text: "Sticky wax bonds the pattern to the sprue." },
@@ -39,7 +40,11 @@ export const STAGES = [
     summary: "The assembly is dipped in ceramic slurry and coated with fine sand, layer after layer, until a strong shell forms.",
     matters:
       "The pattern is handled and dipped repeatedly. If it flexes or deforms, the cavity inside the shell is wrong for good.",
-    materials: [{ name: "Filled Wax", note: "Resists deformation during handling", link: "/investment-casting-wax/filled-wax" }],
+    materials: [
+      { name: "Filled Wax", note: "Resists deformation during handling", link: "/investment-casting-wax/filled-wax" },
+      { name: "Wax Pattern Cleaner & Activator", note: "Uniform primary coat adhesion before first dip", link: "/investment-casting-wax/wax-pattern-cleaner-activator" },
+      { name: "Nano Polymer Additive for Ceramic Slurry", note: "Improves shell strength, drying and permeability", link: "/investment-casting-wax/nano-polymer-additive-ceramic-slurry" },
+    ],
     hotspots: [{ pos: [1.5, 0.55, -0.4], label: "Shell layers", text: "Each dip adds a layer. The shell copies the wax surface, so wax finish carries through." }],
   },
   {

@@ -2,6 +2,10 @@ import { Link, useParams } from "react-router-dom";
 import SEO from "../components/SEO";
 import NotFound from "./NotFound";
 import { getCategoryBySlug, SITE_URL } from "../data/productData";
+import CastingJourney from "../components/CastingJourney";
+import ReleaseJourney from "../components/ReleaseJourney";
+import AdhesiveJourney from "../components/AdhesiveJourney";
+import CoatingJourney from "../components/CoatingJourney";
 
 /* ─── Breadcrumb component ──────────────────────────────────────────────────── */
 function Breadcrumbs({ items }) {
@@ -374,6 +378,21 @@ export default function CategoryPage() {
             {cat.products.map((product) => (
               <ProductCard key={product.slug} product={product} cat={cat} />
             ))}
+          </div>
+
+          {/* ── 3D INTERACTIVE SIMULATION ── */}
+          <div
+            style={{
+              marginTop: 64,
+              borderRadius: 20,
+              overflow: "hidden",
+              border: `1px solid ${cat.accent}33`,
+            }}
+          >
+            {cat.slug === "investment-casting-wax" && <CastingJourney />}
+            {cat.slug === "release-agents" && <ReleaseJourney />}
+            {cat.slug === "adhesives" && <AdhesiveJourney />}
+            {cat.slug === "coatings" && <CoatingJourney />}
           </div>
 
           {/* Related categories */}
