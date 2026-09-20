@@ -72,6 +72,7 @@ export default function ProductPage() {
     name: product.title,
     description: product.intro,
     category: cat.label,
+    url: `${SITE_URL}/${cat.slug}/${product.slug}`,
     brand: {
       "@type": "Brand",
       name: "Chemtech Specialty",
@@ -80,15 +81,6 @@ export default function ProductPage() {
       "@type": "Organization",
       name: "Chemtech Specialty",
       url: SITE_URL,
-    },
-    offers: {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      priceCurrency: "INR",
-      seller: {
-        "@type": "Organization",
-        name: "Chemtech Specialty",
-      },
     },
   };
 

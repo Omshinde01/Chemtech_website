@@ -391,16 +391,21 @@ console.log("Starting static HTML prerender for Chemtech Specialty...");
   ];
 
   const allProductItems = [];
+  let pos = 1;
   categories.forEach((c) => {
     c.products.forEach((p) => {
       allProductItems.push({
-        "@type": "Product",
-        name: p.title,
-        description: p.summary,
-        category: c.label,
-        url: `${SITE_URL}/${c.slug}/${p.slug}`,
-        brand: { "@type": "Brand", name: "Chemtech Specialty" },
-        manufacturer: { "@type": "Organization", name: "Chemtech Specialty" },
+        "@type": "ListItem",
+        position: pos++,
+        item: {
+          "@type": "Product",
+          name: p.title,
+          description: p.summary,
+          category: c.label,
+          url: `${SITE_URL}/${c.slug}/${p.slug}`,
+          brand: { "@type": "Brand", name: "Chemtech Specialty" },
+          manufacturer: { "@type": "Organization", name: "Chemtech Specialty" },
+        },
       });
     });
   });
@@ -805,17 +810,12 @@ categories.forEach((cat) => {
       name: product.title,
       description: product.intro,
       category: cat.label,
+      url: `${SITE_URL}/${cat.slug}/${product.slug}`,
       brand: { "@type": "Brand", name: "Chemtech Specialty" },
       manufacturer: {
         "@type": "Organization",
         name: "Chemtech Specialty",
         url: SITE_URL,
-      },
-      offers: {
-        "@type": "Offer",
-        availability: "https://schema.org/InStock",
-        priceCurrency: "INR",
-        seller: { "@type": "Organization", name: "Chemtech Specialty" },
       },
     };
 

@@ -156,6 +156,66 @@ export const waxProducts = [
     ],
     use: "Used in quality inspection stations for finishing, patching, and restoring investment casting patterns prior to ceramic shell dipping.",
   },
+  {
+    slug: "wax-pattern-cleaner-activator",
+    title: "Wax Pattern Cleaner & Activator",
+    shortTitle: "Pattern Cleaner & Activator",
+    tag: "Surface Preparation",
+    summary:
+      "Precision surface preparation agent for investment casting wax patterns — cleans, conditions, and activates for uniform, defect-free primary ceramic shell adhesion.",
+    metaTitle:
+      "Wax Pattern Cleaner & Activator | Surface Preparation | Chemtech Specialty",
+    metaDescription:
+      "Chemtech Specialty Wax Pattern Cleaner & Activator removes mold release residues and surface contaminants from wax patterns, activating the surface for consistent, uniform primary slurry adhesion and reduced coating-related defects.",
+    specs: {
+      "Application Method": "Gentle wipe or controlled immersion",
+      "Drying Time": "Fast-evaporating; residue-free surface",
+      "Substrate Compatibility": "All standard filled and unfilled pattern waxes",
+      "Surface Effect": "Micro-etched, activated surface for slurry wetting",
+      "Key Characteristic": "Uniform primary coat adhesion, reduced shell defects",
+    },
+    intro:
+      "Chemtech Wax Pattern Cleaner & Activator is a precision surface preparation agent formulated for use immediately before primary ceramic slurry dipping. It removes mold release residues, airborne contaminants, and handling oils from wax pattern surfaces, then conditions the surface to promote controlled wetting and uniform slurry adhesion. The result is a more consistent primary coating layer and a measurable reduction in coating-related shell defects.",
+    points: [
+      "Removes mold release agent residues that cause primary slurry dewetting",
+      "Eliminates handling oils and airborne contaminants from pattern surfaces",
+      "Activates and conditions the wax surface for improved slurry wetting",
+      "Promotes a uniform, continuous primary coating layer across complex geometries",
+      "Reduces pinholing, crawling, and delamination defects in the ceramic shell",
+      "Fast-evaporating formulation integrates seamlessly into existing dipping lines",
+    ],
+    use: "Applied at the pattern preparation station between wax pattern inspection and primary slurry dipping in investment casting foundries producing aerospace, automotive, medical, and precision engineering components.",
+  },
+  {
+    slug: "nano-polymer-additive-ceramic-slurry",
+    title: "Nano Polymer Additive for Ceramic Slurry",
+    shortTitle: "Nano Polymer Additive",
+    tag: "Slurry Enhancement",
+    summary:
+      "Advanced nano polymer additive for ceramic slurry systems — improves shell strength, promotes faster and more uniform drying, and enhances mould permeability for consistent casting quality.",
+    metaTitle:
+      "Nano Polymer Additive for Ceramic Slurry | Shell Strength | Chemtech Specialty",
+    metaDescription:
+      "Chemtech Specialty Nano Polymer Additive for Ceramic Slurry improves modulus of rupture, promotes uniform shell drying, enhances permeability, and reduces cracking tendency in investment casting ceramic shell systems.",
+    specs: {
+      "Additive Type": "Nano polymer dispersion for aqueous slurry systems",
+      "Dosage Form": "Liquid additive; compatible with standard slurry mixing",
+      "Shell Property": "Improved MOR and reduced cracking tendency",
+      "Drying Behavior": "Faster and more uniform shell layer drying",
+      "Key Characteristic": "Enhanced permeability and process consistency",
+    },
+    intro:
+      "Chemtech Nano Polymer Additive for Ceramic Slurry is an engineered process additive designed to optimize the performance of ceramic shell systems in investment casting. Incorporating nano-scale polymer particles into the slurry matrix promotes more uniform shell formation, accelerates interlayer drying, and improves the mechanical integrity and permeability of the fired ceramic mould. The outcome is greater process consistency, reduced shell cracking, and a more predictable casting environment.",
+    points: [
+      "Improves modulus of rupture (MOR) of fired ceramic shells for greater structural reliability",
+      "Promotes faster and more uniform drying between shell coating layers",
+      "Enhances gas permeability of the ceramic mould, reducing back-pressure during casting",
+      "Reduces the tendency for shell cracking during thermal cycling and dewaxing",
+      "Supports more uniform ceramic shell formation across complex pattern geometries",
+      "Improves batch-to-batch process consistency in multi-dip shell building operations",
+    ],
+    use: "Added to primary and backup ceramic slurry systems in investment casting foundries manufacturing aerospace turbine blades, automotive precision components, medical implants, and complex industrial hardware.",
+  },
 ];
 
 // ─── Release Agents ───────────────────────────────────────────────────────────
