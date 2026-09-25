@@ -111,6 +111,18 @@ function renderFooter() {
         </ul>
       </div>
       <div>
+        <p style="color:#ffffff;font-weight:600;margin:0 0 12px;">Key Products</p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:13px;line-height:2;">
+          <li><a href="/investment-casting-wax/filled-wax" style="color:#7AAECB;text-decoration:none;">Filled Wax</a></li>
+          <li><a href="/investment-casting-wax/water-soluble-wax" style="color:#7AAECB;text-decoration:none;">Water Soluble Wax</a></li>
+          <li><a href="/release-agents/rubber-release-agent" style="color:#7AAECB;text-decoration:none;">Rubber Release Agent</a></li>
+          <li><a href="/release-agents/composite-release-agent" style="color:#7AAECB;text-decoration:none;">Composite Release Agent</a></li>
+          <li><a href="/adhesives/rubber-to-metal-adhesive" style="color:#7AAECB;text-decoration:none;">Rubber-to-Metal Adhesive</a></li>
+          <li><a href="/coatings/anti-corrosion-coating" style="color:#7AAECB;text-decoration:none;">Anti-Corrosion Coating</a></li>
+          <li><a href="/coatings/heat-resistant-coating" style="color:#7AAECB;text-decoration:none;">Heat Resistant Coating</a></li>
+        </ul>
+      </div>
+      <div>
         <p style="color:#ffffff;font-weight:600;margin:0 0 12px;">Company &amp; Support</p>
         <ul style="list-style:none;padding:0;margin:0;font-size:13px;line-height:2;">
           <li><a href="/" style="color:#7AAECB;text-decoration:none;">Home</a></li>

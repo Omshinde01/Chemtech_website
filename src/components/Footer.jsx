@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-[#081521] text-gray-300 pt-16 pb-8 px-6 border-t border-white/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
 
         {/* Company Overview & Brand Authority */}
         <div>
@@ -30,9 +30,9 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Products - Deep Link Hierarchy for Search Engines */}
+        {/* Products - Category Links */}
         <div>
-          <h3 className="text-white font-semibold mb-4 text-base">Industrial Products</h3>
+          <h3 className="text-white font-semibold mb-4 text-base">Product Categories</h3>
           <ul className="space-y-2.5 text-sm">
             <li>
               <Link to="/investment-casting-wax" className="hover:text-blue-400 transition flex items-center gap-1.5">
@@ -59,6 +59,20 @@ const Footer = () => {
                 <span className="text-purple-400 font-mono text-xs">05</span> All Products Catalogue
               </Link>
             </li>
+          </ul>
+        </div>
+
+        {/* Key Products - Direct Product Links */}
+        <div>
+          <h3 className="text-white font-semibold mb-4 text-base">Key Products</h3>
+          <ul className="space-y-2.5 text-sm">
+            <li><Link to="/investment-casting-wax/filled-wax" className="hover:text-blue-400 transition">Filled Wax</Link></li>
+            <li><Link to="/investment-casting-wax/water-soluble-wax" className="hover:text-blue-400 transition">Water Soluble Wax</Link></li>
+            <li><Link to="/release-agents/rubber-release-agent" className="hover:text-blue-400 transition">Rubber Release Agent</Link></li>
+            <li><Link to="/release-agents/composite-release-agent" className="hover:text-blue-400 transition">Composite Release Agent</Link></li>
+            <li><Link to="/adhesives/rubber-to-metal-adhesive" className="hover:text-blue-400 transition">Rubber-to-Metal Adhesive</Link></li>
+            <li><Link to="/coatings/anti-corrosion-coating" className="hover:text-blue-400 transition">Anti-Corrosion Coating</Link></li>
+            <li><Link to="/coatings/heat-resistant-coating" className="hover:text-blue-400 transition">Heat Resistant Coating</Link></li>
           </ul>
         </div>
 
