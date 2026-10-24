@@ -40,6 +40,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <Link to="/" className="text-white text-xl font-semibold tracking-wide">
+          
           Chemtech <span className="text-blue-400">Specialty</span>
         </Link>
 

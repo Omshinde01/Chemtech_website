@@ -95,6 +95,22 @@ const Contact = () => {
               className="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-blue-500 focus:bg-white/5 transition duration-300"
             />
 
+            <select
+              defaultValue=""
+              className="w-full bg-[#0B1C2C] text-white border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-blue-500 transition duration-300"
+            >
+              <option value="" disabled>Select Product Category of Interest</option>
+              <option value="waxes">Investment Casting Waxes (Filled, Unfilled, Soluble, Sticky)</option>
+              <option value="release">Industrial Release Agents (Rubber, Composite, Polyurethane)</option>
+              <option value="adhesives">Industrial Adhesives (Friction Materials, Rubber-to-Metal)</option>
+              <option value="coatings">Protective & Heat Resistant Coatings</option>
+            </select>
+
+            <div className="flex items-center space-x-3 pt-1">
+              <input type="checkbox" id="sampleReq" className="w-4 h-4 rounded text-blue-500 bg-white/10 border-white/20" />
+              <label htmlFor="sampleReq" className="text-sm text-gray-300">Request Free Material Evaluation Sample for Plant Testing</label>
+            </div>
+
             <textarea
               rows="5"
               placeholder="Tell us about your requirements..."
