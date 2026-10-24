@@ -207,7 +207,7 @@ const Contact = () => {
               {errors.message && <p id="message-err" className="mt-1.5 text-sm text-red-400">{errors.message}</p>}
             </div>
 
-<<<<<<< HEAD
+
             <select
               defaultValue=""
               className="w-full bg-[#0B1C2C] text-white border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-blue-500 transition duration-300"
@@ -229,7 +229,7 @@ const Contact = () => {
               placeholder="Tell us about your requirements..."
               className="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-blue-500 focus:bg-white/5 transition duration-300 resize-none"
             ></textarea>
-=======
+
             {status === "error" && serverError && (
               <div role="alert" className="flex gap-3 rounded-lg border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
                 <CircleAlert size={18} className="mt-0.5 shrink-0 text-red-400" />
@@ -239,7 +239,7 @@ const Contact = () => {
                 </p>
               </div>
             )}
->>>>>>> 878560b6f52b50a4b92bb9d58047eb6c5c052161
+
 
             <button
               type="submit"
