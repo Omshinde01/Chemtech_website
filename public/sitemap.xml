@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Core Pages -->
+  <url>
+    <loc>https://chemtechspecialty.com/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+    <image:image>
+      <image:loc>https://chemtechspecialty.com/og-image.jpg</image:loc>
+      <image:title>Chemtech Specialty - Industrial Precision Materials</image:title>
+      <image:caption>High-performance waxes, release agents, industrial adhesives, and protective metal coatings</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/products</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://chemtechspecialty.com/og-image.jpg</image:loc>
+      <image:title>Complete Industrial Product Catalogue - Chemtech Specialty</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/about</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/contact</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Category: Investment Casting Wax -->
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Products: Investment Casting Wax -->
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/filled-wax</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/unfilled-wax</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/water-soluble-wax</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/sticky-wax</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/repair-wax</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/wax-pattern-cleaner-activator</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/investment-casting-wax/nano-polymer-additive-ceramic-slurry</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+
+  <!-- Category: Release Agents -->
+  <url>
+    <loc>https://chemtechspecialty.com/release-agents</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Products: Release Agents -->
+  <url>
+    <loc>https://chemtechspecialty.com/release-agents/rubber-release-agent</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/release-agents/composite-release-agent</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/release-agents/polyurethane-release-agent</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/release-agents/rubber-to-metal-release</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/release-agents/metal-to-metal-release</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Category: Adhesives -->
+  <url>
+    <loc>https://chemtechspecialty.com/adhesives</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Products: Adhesives -->
+  <url>
+    <loc>https://chemtechspecialty.com/adhesives/rubber-to-metal-adhesive</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/adhesives/metal-to-metal-adhesive</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/adhesives/friction-material-adhesive</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Category: Protective Coatings -->
+  <url>
+    <loc>https://chemtechspecialty.com/coatings</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Products: Protective Coatings -->
+  <url>
+    <loc>https://chemtechspecialty.com/coatings/anti-corrosion-coating</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/coatings/heat-resistant-coating</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://chemtechspecialty.com/coatings/surface-protection-coating</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+</urlset>

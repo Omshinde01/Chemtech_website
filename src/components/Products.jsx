@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import wax from "../assets/wax.png";
 import release from "../assets/release.jpg";
@@ -12,33 +12,40 @@ const products = [
     title: "Investment Casting Waxes",
     desc: "High-precision waxes designed for smooth surface finish and dimensional accuracy in casting applications.",
     img: wax,
+    alt: "Investment casting waxes for precision foundry casting",
+    link: "/investment-casting-wax",
   },
   {
-    title: "Releasing Agents",
+    title: "Release Agents",
     desc: "Advanced release solutions ensuring clean separation and improved mold life across industrial processes.",
     img: release,
+    alt: "Industrial release agents for rubber, composite, and polyurethane molding",
+    link: "/release-agents",
   },
   {
-    title: "Adhesives",
+    title: "Industrial Adhesives",
     desc: "Strong and reliable bonding solutions for metal, rubber, and friction materials in demanding environments.",
     img: adhesive,
+    alt: "High-strength structural and rubber-to-metal bonding adhesives",
+    link: "/adhesives",
   },
   {
-    title: "Metal Coatings",
-    desc: "Protective coatings enhancing corrosion resistance, durability, and long-term performance.",
+    title: "Protective Metal Coatings",
+    desc: "Protective coatings enhancing corrosion resistance, thermal stability, and long-term durability.",
     img: coating,
+    alt: "Anti-corrosion and high-temperature protective metal coatings",
+    link: "/coatings",
   },
   {
-    title: "Custom Coatings",
-    desc: "Tailor-made specialty coatings developed to meet unique industrial and application-specific requirements.",
+    title: "Custom Formulations",
+    desc: "Tailor-made specialty chemicals developed to meet unique industrial and application-specific requirements.",
     img: custom,
+    alt: "Custom specialty chemical formulation R&D for manufacturing",
+    link: "/products",
   },
 ];
 
 const Products = () => {
-
-  const navigate = useNavigate();
-
   return (
     <section id="products" className="bg-[#0B1C2C] py-24 px-6 text-white">
 
@@ -55,16 +62,18 @@ const Products = () => {
       <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
 
         {products.map((item, i) => (
-          <div
+          <Link
             key={i}
-            onClick={() => navigate("/products")}
-            className="relative group h-72 rounded-xl overflow-hidden border border-white/10 cursor-pointer"
+            to={item.link}
+            className="relative group h-72 rounded-xl overflow-hidden border border-white/10 block focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label={`Explore ${item.title}`}
           >
 
             {/* Image */}
             <img
               src={item.img}
-              alt={item.title}
+              alt={item.alt}
+              loading="lazy"
               className="absolute w-full h-full object-cover group-hover:scale-110 transition duration-500"
             />
 
@@ -73,7 +82,7 @@ const Products = () => {
 
             {/* Content */}
             <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-lg font-semibold">{item.title}</h3>
+              <h3 className="text-lg font-semibold text-white">{item.title}</h3>
 
               <p className="text-sm text-gray-300 mt-2 opacity-90">
                 {item.desc}
@@ -84,7 +93,7 @@ const Products = () => {
               </div>
             </div>
 
-          </div>
+          </Link>
         ))}
 
       </div>

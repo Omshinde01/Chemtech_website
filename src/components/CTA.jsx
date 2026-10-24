@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CTA = () => {
   return (
@@ -23,20 +24,20 @@ const CTA = () => {
         <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
 
           {/* Primary CTA */}
-          <a
-            href="/contact"
+          <Link
+            to="/contact"
             className="bg-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition shadow-lg hover:shadow-blue-500/30"
           >
             Request a Quote
-          </a>
+          </Link>
 
           {/* Secondary CTA */}
-          <a
-            href="/products"
+          <Link
+            to="/products"
             className="border border-white/20 px-6 py-3 rounded-lg hover:bg-white/10 transition"
           >
             Explore Products
-          </a>
+          </Link>
 
         </div>
 

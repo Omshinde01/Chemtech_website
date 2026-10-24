@@ -1,0 +1,27 @@
+{
+  "name": "Chemtech Specialty - Industrial Precision Materials",
+  "short_name": "Chemtech Specialty",
+  "description": "Manufacturer of precision investment casting waxes, industrial mold release agents, rubber-to-metal bonding adhesives, and protective metal coatings.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071523",
+  "theme_color": "#0B1C2C",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ]
+}
