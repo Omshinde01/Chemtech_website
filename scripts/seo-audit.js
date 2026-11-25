@@ -171,6 +171,11 @@ htmlFiles.forEach((filePath) => {
   const jsonLdMatches = [...content.matchAll(/<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
   assert(is404 || jsonLdMatches.length === 1, `Contains ${jsonLdMatches.length} JSON-LD structured data script(s)`);
 
+  assert(
+    !jsonLdMatches.some((m) => /"@type":"Product"/.test(m[1]) && !/"(offers|review|aggregateRating)":/.test(m[1])),
+    "No Product markup that Google would reject"
+  );
+
   jsonLdMatches.forEach((match, idx) => {
     try {
       const parsed = JSON.parse(match[1]);

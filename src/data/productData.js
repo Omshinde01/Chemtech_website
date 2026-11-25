@@ -73,7 +73,7 @@ const waxProducts = [
     summary:
       "Fast-dissolving core wax designed for intricate internal hollows and undercut channels.",
     metaTitle:
-      "Water Soluble Casting Wax for Cores | Chemtech Specialty",
+      "Water Soluble Wax for Investment Casting | Chemtech Specialty",
     metaDescription:
       "Water soluble wax for internal cores in investment casting. Dissolves in warm water in 15–25 minutes, residue-free. Request a sample or quote.",
     specs: {
@@ -254,7 +254,7 @@ const releaseProducts = [
     summary:
       "Engineered for clean release in advanced carbon fiber, epoxy, and prepreg manufacturing.",
     metaTitle:
-      "Composite Release Agent, Carbon & Epoxy | Chemtech Specialty",
+      "Composite Mould Release Agent | Chemtech Specialty",
     metaDescription:
       "Silicone-free composite release agent for carbon fibre, epoxy and prepreg. Autoclave safe to 260°C with a Class-A finish. Request a sample or quote.",
     specs: {
@@ -494,7 +494,7 @@ const coatingProducts = [
     summary:
       "Ceramic-reinforced protective coating maintaining integrity under continuous high temperatures.",
     metaTitle:
-      "Heat Resistant Coating up to 650°C | Chemtech Specialty",
+      "Heat Resistant Coating for Metal, 650°C | Chemtech Specialty",
     metaDescription:
       "Silicone-ceramic heat resistant coating for continuous 650°C service on exhausts, furnaces, boilers and heat exchangers. Request a quote.",
     specs: {

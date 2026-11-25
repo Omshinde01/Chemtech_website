@@ -3,6 +3,7 @@ import SEO from "../components/SEO";
 import Breadcrumbs from "../components/Breadcrumbs";
 import ProductCard from "../components/ProductCard";
 import { getCategoryBySlug, getProductBySlug } from "../data/productData";
+import { productGuides } from "../data/productGuides";
 import { BUSINESS, ORG_REF, SITE_URL } from "../lib/site";
 
 const WHY = [
@@ -25,6 +26,7 @@ export default function ProductPage() {
   const { categorySlug, productSlug } = useParams();
   const cat = getCategoryBySlug(categorySlug);
   const product = getProductBySlug(categorySlug, productSlug);
+  const guide = productGuides[product.slug];
   const path = `/${cat.slug}/${product.slug}`;
   const crumbs = [
     { name: "Home", path: "/" },
@@ -44,15 +46,14 @@ export default function ProductPage() {
         description={product.metaDescription}
         path={path}
         breadcrumbs={crumbs}
+        // No Product markup: Google rejects it without a real price, review or rating.
         schema={[{
-          "@type": "Product",
-          name: product.title,
-          description: product.intro,
-          category: cat.label,
+          "@type": "WebPage",
+          name: product.metaTitle,
+          description: product.metaDescription,
           url: `${SITE_URL}${path}`,
-          brand: { "@type": "Brand", name: BUSINESS.name },
-          manufacturer: ORG_REF,
-          additionalProperty: Object.entries(product.specs).map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
+          inLanguage: "en-IN",
+          publisher: ORG_REF,
         }, { "@type": "Organization", ...ORG_REF, name: BUSINESS.name, url: `${SITE_URL}/` }]}
       />
 
@@ -83,6 +84,39 @@ export default function ProductPage() {
             <Section title="Applications & Use Cases">
               <p className="a-card rounded-lg px-5 py-4 text-sm leading-relaxed text-[#A8C0D6]">{product.use}</p>
             </Section>
+
+            {guide?.sections.map((s) => (
+              <Section key={s.title} title={s.title}>
+                {s.intro && <p className="mb-4 text-[15px] leading-loose text-[#A8C0D6]">{s.intro}</p>}
+                {s.body && <p className="text-[15px] leading-loose text-[#A8C0D6]">{s.body}</p>}
+                {s.steps && (
+                  <ol className="list-decimal space-y-3 pl-5 text-sm leading-relaxed text-[#B8D0E8]">
+                    {s.steps.map((step) => <li key={step} className="pl-1">{step}</li>)}
+                  </ol>
+                )}
+              </Section>
+            ))}
+
+            {guide && (
+              <Section title="Frequently Asked Questions">
+                <dl className="space-y-5 text-sm leading-relaxed">
+                  {guide.faqs.map(([q, answer]) => (
+                    <div key={q}>
+                      <dt className="mb-1 font-semibold text-[#F0F6FF]">{q}</dt>
+                      <dd className="text-[#A8C0D6]">{answer}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </Section>
+            )}
+
+            {guide && (
+              <Section title="See Also">
+                <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold">
+                  {guide.seeAlso.map(([to, label]) => <li key={to}><Link to={to} className="a-text inline-block py-1 hover:underline">{label} →</Link></li>)}
+                </ul>
+              </Section>
+            )}
 
             <Section title="Why Choose Chemtech Specialty">
               <ul className="grid gap-3 sm:grid-cols-2">
