@@ -55,6 +55,12 @@ ${paths.map((p) => `  <url><loc>${SITE_URL}${p}</loc></url>`).join("\n")}
 `
 );
 
+// Cloudflare's own trailing-slash redirect is a temporary 307; these make it permanent.
+fs.writeFileSync(
+  path.join(dist, "_redirects"),
+  paths.filter((p) => p !== "/").map((p) => `${p}/ ${p} 301\n`).join("")
+);
+
 fs.rmSync(path.join(dist, ".vite"), { recursive: true });
 fs.rmSync(ssrDir, { recursive: true });
 console.log(`Prerendered ${paths.length} pages + 404, wrote sitemap.xml`);
