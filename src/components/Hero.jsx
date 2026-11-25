@@ -1,84 +1,42 @@
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 import { Link } from "react-router-dom";
-import Heromain from "../assets/Heromain.jpg";
+import avif640 from "../assets/hero-640.avif";
+import avif1020 from "../assets/hero-1020.avif";
+import webp640 from "../assets/hero-640.webp";
+import webp1020 from "../assets/hero-1020.webp";
 
-const Hero = () => {
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      gsap.fromTo(
-        contentRef.current,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        }
-      );
-    });
-  }, []);
-
+export default function Hero() {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
+      <picture>
+        <source type="image/avif" srcSet={`${avif640} 640w, ${avif1020} 1020w`} sizes="100vw" />
+        <img
+          src={webp1020}
+          srcSet={`${webp640} 640w, ${webp1020} 1020w`}
+          sizes="100vw"
+          width="1020"
+          height="512"
+          alt="Chemtech Specialty engineer working on an industrial wax and coating formulation"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
+      <div className="absolute inset-0 bg-[#0B1C2C]/80" />
 
-      {/* Optimized Background */}
-      <img
-        src={Heromain}
-        alt="Chemtech Specialty precision industrial material manufacturing"
-        loading="eager"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-[#0B1C2C]/80"></div>
-
-      {/* Content */}
-      <div
-        ref={contentRef}
-        className="relative z-10 text-center px-6 max-w-4xl will-change-transform"
-      >
-        <p className="text-blue-400 uppercase tracking-wider text-sm mb-4">
-          Chemtech Specialty
-        </p>
-
-        <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-          Advanced Waxes &
-          <span className="block text-blue-400 mt-2">
-            Industrial Coating Solutions
-          </span>
+      <div className="hero-in relative z-10 max-w-4xl px-6 pb-12 pt-24 text-center">
+        <p className="mb-4 text-sm uppercase tracking-wider text-blue-400">Chemtech Specialty · Nashik, India</p>
+        <h1 className="text-4xl font-bold leading-tight text-white md:text-6xl">
+          Investment Casting Waxes &amp;
+          <span className="mt-2 block text-blue-400">Industrial Coating Solutions</span>
         </h1>
-
-        <p className="mt-6 text-lg text-gray-300">
-          Delivering high-performance materials for precision casting,
+        <p className="mt-6 text-lg text-gray-200">
+          Delivering high-performance waxes, release agents, adhesives and coatings for precision casting,
           bonding, and surface engineering across global industries.
         </p>
-
-        {/* CTA Buttons */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-
-          {/* CONTACT PAGE */}
-          <Link
-            to="/contact"
-            className="bg-blue-600 px-6 py-3 rounded-lg text-white font-medium hover:bg-blue-700 transition inline-block text-center"
-          >
-            Get a Quote
-          </Link>
-
-          {/* PRODUCTS PAGE */}
-          <Link
-            to="/products"
-            className="border border-gray-300 px-6 py-3 rounded-lg text-white hover:bg-gray-700 transition inline-block text-center"
-          >
-            View Products
-          </Link>
-
+        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+          <Link to="/contact" className="rounded-lg bg-blue-600 px-6 py-3 text-center font-medium text-white transition hover:bg-blue-700">Get a Quote</Link>
+          <Link to="/products" className="rounded-lg border border-gray-300 px-6 py-3 text-center text-white transition hover:bg-white/10">View Products</Link>
         </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

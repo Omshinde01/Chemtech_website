@@ -1,101 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import { businessSchema } from "../lib/site";
 
+const CRUMBS = [{ name: "Home", path: "/" }, { name: "About", path: "/about" }];
 
-/* ─────────────────────────────────────────────
-   1. SCROLL TO TOP ON EVERY PAGE VISIT
-   Put this hook in the component — fires on mount
-   so the page always starts at the very top.
-───────────────────────────────────────────── */
-function useScrollToTop() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+/* Scroll-driven fade in (CSS only, see .reveal) */
+function Reveal({ children, className = "" }) {
+  return <div className={`reveal ${className}`}>{children}</div>;
 }
 
-/* ─────────────────────────────────────────────
-   2. INTERSECTION OBSERVER — re-triggers every
-   time the element enters the viewport so
-   animations fire on EVERY scroll pass.
-───────────────────────────────────────────── */
-function useScrollReveal(threshold = 0.12) {
+/* The real value is in the HTML; it counts up once when the page opens. */
+function Counter({ to, suffix = "" }) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        // Set true when entering, false when leaving → re-animates each scroll
-        setVisible(entry.isIntersecting);
-      },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return [ref, visible];
-}
-
-/* ─────────────────────────────────────────────
-   3. REVEAL WRAPPER — multiple animation variants
-───────────────────────────────────────────── */
-function Reveal({
-  children,
-  delay = 0,
-  direction = "up",   // "up" | "down" | "left" | "right" | "scale" | "fade"
-  className = "",
-  style = {},
-}) {
-  const [ref, visible] = useScrollReveal();
-
-  const hiddenTransforms = {
-    up:    "translateY(40px)",
-    down:  "translateY(-40px)",
-    left:  "translateX(50px)",
-    right: "translateX(-50px)",
-    scale: "scale(0.88)",
-    fade:  "translateY(0)",
-  };
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translate(0) scale(1)" : hiddenTransforms[direction],
-        transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s,
-                     transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-/* ── Animated counter ── */
-function Counter({ to, suffix = "" }) {
-  const [count, setCount] = useState(0);
-  const [ref, visible] = useScrollReveal();
-  useEffect(() => {
-    if (!visible) {
-      setCount(0);
-      return;
-    }
-    let v = 0;
-    const step = Math.max(1, Math.ceil(to / 40));
-    const t = setInterval(() => {
-      v += step;
-      if (v >= to) { setCount(to); clearInterval(t); } else setCount(v);
-    }, 28);
-    return () => clearInterval(t);
-  }, [visible, to]);
-  return <span ref={ref}>{count}{suffix}</span>;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const start = performance.now();
+    let frame = requestAnimationFrame(function tick(now) {
+      const p = Math.min(1, Math.max(0, now - start) / 1100);
+      el.textContent = `${Math.round(to * p)}${suffix}`;
+      if (p < 1) frame = requestAnimationFrame(tick);
+    });
+    return () => { cancelAnimationFrame(frame); el.textContent = `${to}${suffix}`; };
+  }, [to, suffix]);
+  return <span ref={ref}>{`${to}${suffix}`}</span>;
 }
 
 /* ── Hero SVG Illustration ── */
@@ -300,19 +229,14 @@ const process = [
    MAIN COMPONENT
 ───────────────────────────────────────────── */
 export default function About() {
-  // ✅ Always scroll to top when this page mounts
-  useScrollToTop();
-  const navigate = useNavigate();
   return (
     <>
       <SEO
-        title="About Chemtech Specialty | Industrial Material Solutions | Nashik, India"
-        description="Learn about Chemtech Specialty, a manufacturer of industrial specialty materials including investment casting waxes, release agents, adhesives, and protective coatings. Based in Nashik, Maharashtra."
-        canonicalPath="/about"
-        breadcrumbs={[
-          { name: "Home", item: "/" },
-          { name: "About Chemtech Specialty", item: "/about" },
-        ]}
+        title="About Us | Chemtech Specialty, Nashik, India"
+        description="Chemtech Specialty manufactures industrial specialty materials in Nashik, Maharashtra: investment casting waxes, release agents, adhesives and coatings."
+        path="/about"
+        breadcrumbs={CRUMBS}
+        schema={[businessSchema, { "@type": "AboutPage", name: "About Chemtech Specialty" }]}
       />
     <div
       style={{
@@ -364,7 +288,7 @@ export default function About() {
           transition: border-color 0.25s, transform 0.25s;
           height: 100%;
         }
-        .about-val-card:hover { transform: translateY(-5px); }
+        .about-val-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--accent) 27%, transparent); }
         .about-process-row {
           display: grid;
           grid-template-columns: 56px 1fr;
@@ -386,14 +310,14 @@ export default function About() {
 
             {/* Left text */}
             <div>
-              <Reveal direction="left">
+              <Reveal>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.25)", borderRadius: 4, padding: "5px 14px", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#60A5FA", marginBottom: 28 }}>
                   <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#60A5FA" }} />
                   About Chemtech Specialty
                 </div>
               </Reveal>
 
-              <Reveal direction="up" delay={0.08}>
+              <Reveal>
                 <h1 id="about-hero-heading" style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 700, lineHeight: 1.12, margin: "0 0 24px", color: "#F0F6FF", letterSpacing: "-0.02em" }}>
                   Precision Materials for
                   <span style={{ display: "block", color: "transparent", WebkitBackgroundClip: "text", backgroundClip: "text", backgroundImage: "linear-gradient(90deg, #3B82F6, #22D3EE)" }}>
@@ -402,20 +326,20 @@ export default function About() {
                 </h1>
               </Reveal>
 
-              <Reveal direction="up" delay={0.16}>
-                <p style={{ fontSize: 16, color: "#6A8FA8", lineHeight: 1.8, margin: "0 0 36px", maxWidth: 460 }}>
+              <Reveal>
+                <p style={{ fontSize: 16, color: "#8BAEC9", lineHeight: 1.8, margin: "0 0 36px", maxWidth: 460 }}>
                   Chemtech Specialty delivers high-performance industrial materials engineered for precision manufacturing — from investment casting waxes and release agents to adhesives and protective coatings.
                 </p>
               </Reveal>
 
-              <Reveal direction="up" delay={0.24}>
+              <Reveal>
                 <div className="about-stat-row">
                   {stats.map((s, i) => (
                     <div key={i}>
                       <div style={{ fontSize: 28, fontWeight: 700, color: "#3B82F6", lineHeight: 1 }}>
                         <Counter to={s.value} suffix={s.suffix} />
                       </div>
-                      <div style={{ fontSize: 12, color: "#4A6A86", marginTop: 4, fontWeight: 500 }}>{s.label}</div>
+                      <div style={{ fontSize: 12, color: "#8BAEC9", marginTop: 4, fontWeight: 500 }}>{s.label}</div>
                     </div>
                   ))}
                 </div>
@@ -423,7 +347,7 @@ export default function About() {
             </div>
 
             {/* Right: illustration */}
-            <Reveal direction="right" delay={0.1}>
+            <Reveal>
               <div style={{ position: "relative" }}>
                 <div aria-hidden="true" style={{ position: "absolute", inset: -12, border: "1px solid rgba(59,130,246,0.15)", borderRadius: 20, pointerEvents: "none" }} />
                 <HeroIllustration />
@@ -435,10 +359,10 @@ export default function About() {
 
       {/* ── WHO WE ARE ── */}
       <section style={{ borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.015)" }} aria-labelledby="who-we-are-heading">
-        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "80px 32px" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "80px 24px" }}>
           <div className="about-who-grid">
 
-            <Reveal direction="left">
+            <Reveal>
               <div className="about-sticky">
                 <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3B82F6", marginBottom: 16 }}>Who We Are</div>
                 <h2 id="who-we-are-heading" style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, color: "#F0F6FF", lineHeight: 1.2, margin: 0, letterSpacing: "-0.02em" }}>
@@ -448,17 +372,17 @@ export default function About() {
             </Reveal>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <Reveal direction="up" delay={0.08}>
-                <p style={{ fontSize: 16, color: "#7A9BB8", lineHeight: 1.85, margin: 0 }}>
+              <Reveal>
+                <p style={{ fontSize: 16, color: "#8BAEC9", lineHeight: 1.85, margin: 0 }}>
                   We are a manufacturer and supplier of industrial specialty materials, committed to supporting businesses with reliable and high-quality solutions. Our products are developed to meet the demanding requirements of modern industrial environments where consistency and performance are critical.
                 </p>
               </Reveal>
-              <Reveal direction="up" delay={0.16}>
-                <p style={{ fontSize: 16, color: "#7A9BB8", lineHeight: 1.85, margin: 0 }}>
+              <Reveal>
+                <p style={{ fontSize: 16, color: "#8BAEC9", lineHeight: 1.85, margin: 0 }}>
                   Over time, we have built a deep understanding of manufacturing processes and the challenges that arise within them. This knowledge allows us to provide practical material solutions that improve production efficiency, minimize process issues, and maintain high quality across every run.
                 </p>
               </Reveal>
-              <Reveal direction="up" delay={0.24}>
+              <Reveal>
                 <div style={{ marginTop: 8, padding: "24px 28px", background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.15)", borderRadius: 12 }}>
                   <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3B82F6", marginBottom: 16, opacity: 0.8 }}>Industries We Serve</div>
                   <ul style={{ display: "flex", flexWrap: "wrap", gap: 10, margin: 0, padding: 0, listStyle: "none" }} aria-label="Industries served by Chemtech Specialty">
@@ -475,7 +399,7 @@ export default function About() {
 
       {/* ── HOW WE WORK ── */}
       <section style={{ maxWidth: 1140, margin: "0 auto", padding: "96px 32px" }} aria-labelledby="process-heading">
-        <Reveal direction="up">
+        <Reveal>
           <div style={{ textAlign: "center", marginBottom: 64 }}>
             <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#22D3EE", marginBottom: 14 }}>Our Process</div>
             <h2 id="process-heading" style={{ fontSize: "clamp(24px, 3vw, 42px)", fontWeight: 700, color: "#F0F6FF", margin: 0, letterSpacing: "-0.02em" }}>How We Work</h2>
@@ -488,7 +412,7 @@ export default function About() {
             {process.map((item, i) => (
               <li key={i}>
                 {/* Alternate left/right slide for each step */}
-                <Reveal direction={i % 2 === 0 ? "right" : "left"} delay={i * 0.07}>
+                <Reveal>
                   <div className="about-process-row" style={{ borderBottom: i < process.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#60A5FA", letterSpacing: "0.05em", flexShrink: 0 }} aria-hidden="true">
@@ -497,7 +421,7 @@ export default function About() {
                     </div>
                     <div style={{ paddingTop: 12 }}>
                       <h3 style={{ fontSize: 18, fontWeight: 600, color: "#E8EFF8", margin: "0 0 10px" }}>{item.title}</h3>
-                      <p style={{ fontSize: 15, color: "#6A8FA8", lineHeight: 1.75, margin: 0 }}>{item.desc}</p>
+                      <p style={{ fontSize: 15, color: "#8BAEC9", lineHeight: 1.75, margin: 0 }}>{item.desc}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -510,7 +434,7 @@ export default function About() {
       {/* ── VALUES ── */}
       <section style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.015)", padding: "96px 0" }} aria-labelledby="values-heading">
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 32px" }}>
-          <Reveal direction="up">
+          <Reveal>
             <div style={{ marginBottom: 56 }}>
               <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#10B981", marginBottom: 14 }}>Our Values</div>
               <h2 id="values-heading" style={{ fontSize: "clamp(24px, 3vw, 42px)", fontWeight: 700, color: "#F0F6FF", margin: 0, letterSpacing: "-0.02em" }}>What Drives Us</h2>
@@ -519,17 +443,16 @@ export default function About() {
 
           <div className="about-values-grid">
             {values.map((val, i) => (
-              <Reveal key={i} direction="scale" delay={i * 0.12}>
+              <Reveal key={i}>
                 <article
                   className="about-val-card"
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${val.accent}44`; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; }}
+                  style={{ "--accent": val.accent }}
                   aria-label={val.title}
                 >
                   <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: val.accent, opacity: 0.6 }} />
                   <div style={{ fontSize: 42, fontWeight: 700, color: val.accent, opacity: 0.15, lineHeight: 1, marginBottom: 20, letterSpacing: "-0.04em" }} aria-hidden="true">{val.number}</div>
                   <h3 style={{ fontSize: 18, fontWeight: 600, color: "#E8EFF8", margin: "0 0 14px" }}>{val.title}</h3>
-                  <p style={{ fontSize: 14, color: "#5A7A96", lineHeight: 1.75, margin: 0 }}>{val.body}</p>
+                  <p style={{ fontSize: 14, color: "#8BAEC9", lineHeight: 1.75, margin: 0 }}>{val.body}</p>
                 </article>
               </Reveal>
             ))}
@@ -539,62 +462,32 @@ export default function About() {
 
       {/* ── CTA ── */}
       <section style={{ maxWidth: 1140, margin: "0 auto", padding: "96px 32px" }} aria-labelledby="cta-heading">
-        <Reveal direction="scale">
+        <Reveal>
           <div className="about-cta-pad" style={{ position: "relative", background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.18)", borderRadius: 20, padding: "64px 56px", overflow: "hidden", textAlign: "center" }}>
             <div aria-hidden="true" style={{ position: "absolute", right: -60, bottom: -60, width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
             <div aria-hidden="true" style={{ position: "absolute", left: -40, top: -40, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            <Reveal direction="up" delay={0.05}>
+            <Reveal>
               <div style={{ position: "relative", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#60A5FA", marginBottom: 20 }}>Looking Ahead</div>
             </Reveal>
-            <Reveal direction="up" delay={0.12}>
+            <Reveal>
               <h2 id="cta-heading" style={{ position: "relative", fontSize: "clamp(22px, 3vw, 38px)", fontWeight: 700, color: "#F0F6FF", margin: "0 auto 20px", maxWidth: 580, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
                 Driving Innovation Through Industrial Materials
               </h2>
             </Reveal>
-            <Reveal direction="up" delay={0.18}>
-              <p style={{ position: "relative", fontSize: 15, color: "#6A8FA8", lineHeight: 1.8, margin: "0 auto 36px", maxWidth: 560 }}>
+            <Reveal>
+              <p style={{ position: "relative", fontSize: 15, color: "#8BAEC9", lineHeight: 1.8, margin: "0 auto 36px", maxWidth: 560 }}>
                 As industries evolve, we remain committed to innovation, process improvement, and delivering advanced material solutions that support modern manufacturing.
               </p>
             </Reveal>
-            <Reveal direction="up" delay={0.24}>
-              <button
-                onClick={() => navigate("/contact")}
-                style={{
-                  position: "relative",
-                  display: "inline-block",
-                  background: "#3B82F6",
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  padding: "13px 32px",
-                  borderRadius: 8,
-                  border: "none",
-                  cursor: "pointer",
-                  letterSpacing: "0.02em",
-                  transition: "background 0.2s, transform 0.2s"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#2563EB";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "#3B82F6";
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-                aria-label="Contact Chemtech Specialty"
-              >
+            <Reveal>
+              <Link to="/contact" className="relative inline-block rounded-lg bg-blue-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
                 Get in Touch →
-              </button>
+              </Link>
             </Reveal>
           </div>
         </Reveal>
       </section>
-
-      {/* Footer */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "24px 32px", textAlign: "center", fontSize: 12, color: "#2A4A66" }} role="contentinfo">
-        <p style={{ margin: 0 }}>Chemtech Specialty — Engineered materials for industrial performance</p>
-      </div>
     </div>
     </>
   );

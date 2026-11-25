@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/immutability, react-hooks/refs -- three.js objects are mutated imperatively in useFrame by design */
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Environment, Lightformer, ContactShadows, Sparkles, Html } from "@react-three/drei";
+import { useEffect, useMemo, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import SceneShell, { Hotspot } from "./SceneShell";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { STAGES } from "./castingStages";
 
@@ -128,35 +128,6 @@ const SLURRY = new THREE.Color("#e6e1d6");
 const SAND = new THREE.Color("#c7b08d");
 
 /* ───────────────────────── Scene ───────────────────────── */
-
-function Hotspot({ pos, label, text }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <Html position={pos} zIndexRange={[20, 0]} style={{ pointerEvents: "auto" }}>
-      <div className="hs-in relative" style={{ transform: "translate(-7px,-7px)" }}>
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
-          aria-expanded={open}
-          className="flex items-center gap-2 whitespace-nowrap rounded-full border border-blue-300/40 bg-[#0B1C2C]/85 py-1 pl-1.5 pr-3 text-xs text-white backdrop-blur focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-        >
-          <span className="relative flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-70" />
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-400" />
-          </span>
-          {label}
-        </button>
-        {open && (
-          <div className="absolute left-0 top-full z-10 mt-2 w-52 rounded-lg border border-white/10 bg-[#0B1C2C]/95 p-3 text-xs leading-relaxed text-gray-200 shadow-xl">
-            {text}
-          </div>
-        )}
-      </div>
-    </Html>
-  );
-}
 
 function Model({ stage, reduced }) {
   const camera = useThree((s) => s.camera);
@@ -331,70 +302,12 @@ function Model({ stage, reduced }) {
   );
 }
 
-function Stage({ stage, reduced, autoRotate, onInteract }) {
-  const gl = useThree((s) => s.gl);
-  const camera = useThree((s) => s.camera);
-  const { width, height } = useThree((s) => s.size);
-  // Pull back a little on tall/narrow (phone) viewports so the whole model stays in frame.
-  useEffect(() => {
-    camera.zoom = width / height < 1 ? 0.78 : 1;
-    camera.updateProjectionMatrix();
-  }, [camera, width, height]);
-  // OrbitControls sets touch-action:none which would trap page scrolling on phones.
-  useEffect(() => { gl.domElement.style.touchAction = "pan-y"; }, [gl]);
+const THEME = { accent: "#3b82f6", table: "#0d2438", sky: "#0c1f33", rim: "#5b9dff", key: "#dbe9ff", fill: "#6aa3ff", spark: "#7db3ff" };
+
+export default function CastingScene(props) {
   return (
-    <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 7, 4]} intensity={1.7} />
-      <directionalLight position={[-5, 3, -4]} intensity={1.1} color="#5b9dff" />
-
-      <Environment resolution={256} frames={1} environmentIntensity={0.9}>
-        <mesh scale={60}><sphereGeometry args={[1, 32, 16]} /><meshBasicMaterial color="#0c1f33" side={THREE.BackSide} /></mesh>
-        <Lightformer form="rect" intensity={4} position={[0, 6, -3]} scale={[12, 2.5, 1]} color="#dbe9ff" />
-        <Lightformer form="rect" intensity={2.5} position={[-6, 1, 2]} rotation-y={Math.PI / 2} scale={[3, 6, 1]} color="#6aa3ff" />
-        <Lightformer form="rect" intensity={3} position={[6, 2, 3]} rotation-y={-Math.PI / 2} scale={[3, 5, 1]} color="#ffffff" />
-      </Environment>
-
-      {/* Turntable */}
-      <mesh position={[0, -0.34, 0]}>
-        <cylinderGeometry args={[2.35, 2.45, 0.14, 96]} />
-        <meshStandardMaterial color="#0d2438" metalness={0.7} roughness={0.35} />
-      </mesh>
-      <mesh position={[0, -0.265, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[2.25, 2.33, 96]} />
-        <meshBasicMaterial color="#3b82f6" />
-      </mesh>
-      <ContactShadows position={[0, -0.26, 0]} opacity={0.55} scale={7} blur={2.4} far={2.2} resolution={256} />
-
-      <Model stage={stage} reduced={reduced} />
-
-      {!reduced && <Sparkles count={36} scale={[7, 3.5, 7]} position={[0, 1.4, 0]} size={2.2} speed={0.25} opacity={0.55} color="#7db3ff" />}
-
-      <OrbitControls
-        target={[0, 1.3, 0]}
-        enablePan={false}
-        enableZoom={false}
-        enableDamping
-        minPolarAngle={0.85}
-        maxPolarAngle={1.62}
-        autoRotate={autoRotate && !reduced}
-        autoRotateSpeed={0.9}
-        onStart={onInteract}
-      />
-    </>
-  );
-}
-
-export default function CastingScene({ stage, active, reduced, autoRotate, onInteract }) {
-  return (
-    <Canvas
-      frameloop={active ? "always" : "never"}
-      dpr={[1, 1.75]}
-      camera={{ position: [5.9, 3.3, 7.0], fov: 32, near: 0.1, far: 60 }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      onCreated={({ gl }) => { gl.localClippingEnabled = true; }}
-    >
-      <Stage stage={stage} reduced={reduced} autoRotate={autoRotate} onInteract={onInteract} />
-    </Canvas>
+    <SceneShell {...props} theme={THEME} target={[0, 1.3, 0]} camera={[5.9, 3.3, 7.0]} tableY={-0.34}>
+      <Model stage={props.stage} reduced={props.reduced} />
+    </SceneShell>
   );
 }

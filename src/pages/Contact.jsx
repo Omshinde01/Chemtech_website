@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { LoaderCircle, CircleCheck, CircleAlert, Send } from "lucide-react";
+import { LoaderCircle, CircleCheck, CircleAlert, MapPin, Send } from "lucide-react";
 import SEO from "../components/SEO";
+import { categories, customCategory } from "../data/productData";
+import { BUSINESS, businessSchema } from "../lib/site";
 
-// Same-origin by default. Set VITE_API_URL only if the API is hosted on another domain.
-const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/quote`;
+// Same-origin by default. Set VITE_API_URL when the API is hosted on another domain.
+const API = import.meta.env.VITE_API_URL || "";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const EMPTY = { name: "", email: "", company: "", category: "", sample: false, message: "", website: "" };
+const CRUMBS = [{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }];
+const allCategories = [...categories, customCategory];
+const MAP_QUERY = encodeURIComponent(`Vadner Dumala, ${BUSINESS.city}, ${BUSINESS.region} ${BUSINESS.postalCode}`);
 
-const inputClass =
-  "w-full bg-transparent border rounded-lg px-4 py-3 outline-none focus:bg-white/5 transition duration-300";
+const FIELDS = [
+  { name: "name", label: "Your name", type: "text", autoComplete: "name", required: true, maxLength: 100 },
+  { name: "email", label: "Email", type: "email", autoComplete: "email", required: true, maxLength: 254 },
+  { name: "company", label: "Company (optional)", type: "text", autoComplete: "organization", maxLength: 150 },
+];
+
+const inputClass = (error) =>
+  `w-full rounded-lg border bg-[#0B1C2C] px-4 py-3 text-base text-white transition ${error ? "border-red-400/60" : "border-white/15 focus:border-blue-500"}`;
 
 function validate(v) {
   const e = {};
@@ -19,39 +30,69 @@ function validate(v) {
   return e;
 }
 
-function useScrollToTop() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+// If sending fails, the visitor can still email exactly what they typed.
+const mailto = (v) =>
+  `mailto:${BUSINESS.email}?subject=${encodeURIComponent("Quote request")}&body=${encodeURIComponent(`${v.message}\n\n${v.name}\n${v.company}`.trim())}`;
+
+function FieldError({ name, error }) {
+  return error ? <p id={`${name}-err`} className="mt-1.5 text-sm text-red-400">{error}</p> : null;
 }
 
-const Contact = () => {
-  useScrollToTop();
-  const [searchParams] = useSearchParams();
-  const prefilledProduct = searchParams.get("product") || "";
+function Map() {
+  const [open, setOpen] = useState(false);
+  // Google Maps is heavy, so it only loads on request.
+  return open ? (
+    <iframe title={`Map of ${BUSINESS.city}`} src={`https://www.google.com/maps?q=${MAP_QUERY}&output=embed`} className="h-80 w-full rounded-2xl border border-white/10 grayscale" />
+  ) : (
+    <button type="button" onClick={() => setOpen(true)} className="flex h-44 w-full flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 text-gray-300 transition hover:bg-white/10">
+      <MapPin className="text-blue-400" aria-hidden="true" /> Show map of {BUSINESS.city}, {BUSINESS.region}
+    </button>
+  );
+}
 
-  const [values, setValues] = useState({ name: "", email: "", company: "", message: prefilledProduct ? `Inquiry about: ${prefilledProduct}\n\n` : "", website: "" });
+export default function Contact() {
+  const [params] = useSearchParams();
+  const product = params.get("product");
+  const [values, setValues] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [serverError, setServerError] = useState("");
+  const form = useRef(null);
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setValues((v) => ({ ...v, [name]: value }));
-    if (errors[name]) setErrors((er) => ({ ...er, [name]: undefined }));
+  // Wake the API (it sleeps when idle) so it's ready by the time the form is filled in.
+  useEffect(() => {
+    fetch(`${API}/api/health`, { mode: "no-cors" }).catch(() => {});
+  }, []);
+
+  // Prefill from ?product= after hydration, so the first render matches the static HTML.
+  useEffect(() => {
+    if (!product) return;
+    const cat = allCategories.find((c) => c.label === product || c.products.some((p) => p.title === product));
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs from the URL, which isn't known at prerender time
+    setValues((v) => (v.message ? v : { ...v, category: cat?.key || "", message: `Inquiry about: ${product}\n\n` }));
+  }, [product]);
+
+  const onChange = ({ target: { name, type, checked, value } }) => {
+    setValues((v) => ({ ...v, [name]: type === "checkbox" ? checked : value }));
+    if (errors[name]) setErrors((e) => ({ ...e, [name]: undefined }));
+  };
+
+  const showErrors = (found) => {
+    setErrors(found);
+    form.current?.elements[Object.keys(found)[0]]?.focus();
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (status === "sending") return;
     const found = validate(values);
-    setErrors(found);
-    if (Object.keys(found).length) return;
+    if (Object.keys(found).length) return showErrors(found);
 
-    setStatus("sending");
+    setErrors({});
     setServerError("");
+    setStatus("sending");
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API}/api/quote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -59,10 +100,10 @@ const Contact = () => {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
         setStatus("success");
-        setValues({ name: "", email: "", company: "", message: "", website: "" });
+        setValues(EMPTY);
         return;
       }
-      if (data.errors) setErrors(data.errors);
+      if (data.errors) showErrors(data.errors);
       setServerError(data.error || "Something went wrong. Please check the form and try again.");
     } catch {
       setServerError("We couldn't reach the server. Check your connection and try again.");
@@ -70,269 +111,99 @@ const Contact = () => {
     setStatus("error");
   };
 
-  const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7
-      }
-    }
-  };
+  const aria = (name) => ({ "aria-invalid": !!errors[name], "aria-describedby": errors[name] ? `${name}-err` : undefined });
+  const label = "mb-1.5 block text-sm text-gray-300";
 
   return (
-    <>
+    <div className="min-h-screen bg-[#0B1C2C] text-white">
       <SEO
-        title="Contact Chemtech Specialty | Request a Quote | Nashik, India"
-        description="Contact Chemtech Specialty for investment casting waxes, release agents, adhesives, and protective coatings. Our engineers are available for technical consultation, sample requests, and quotes."
-        canonicalPath="/contact"
-        breadcrumbs={[
-          { name: "Home", item: "/" },
-          { name: "Contact & Request a Quote", item: "/contact" },
-        ]}
+        title="Contact & Request a Quote | Chemtech Specialty, Nashik"
+        description="Request a quote, sample or technical data sheet for casting waxes, release agents, adhesives and coatings. Call or email Chemtech Specialty, Nashik, India."
+        path="/contact"
+        breadcrumbs={CRUMBS}
+        schema={[businessSchema, { "@type": "ContactPage", name: "Contact Chemtech Specialty" }]}
       />
-    <div className="bg-[#0B1C2C] text-white min-h-screen">
 
-      {/* TOP INTRO */}
-      <motion.section
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        className="max-w-6xl mx-auto px-6 pt-24"
-      >
-
-        <p className="text-blue-400 text-sm uppercase tracking-wider">
-          Contact Us
+      <header className="mx-auto max-w-6xl px-6 pt-28">
+        <p className="text-sm uppercase tracking-wider text-blue-400">Contact Us</p>
+        <h1 className="mt-3 text-4xl font-bold leading-tight md:text-5xl">Let’s Build Reliable Industrial Solutions Together</h1>
+        <p className="mt-6 max-w-4xl leading-relaxed text-gray-300">
+          Whether you are looking for investment casting waxes, releasing agents, adhesives, or custom coating solutions, our team is ready to assist you with reliable industrial materials tailored to your manufacturing requirements. We believe in building long-term relationships through quality products, technical support, and consistent service.
         </p>
+      </header>
 
-        <h1 className="text-4xl md:text-5xl font-bold mt-3 leading-tight">
-          Let’s Build Reliable Industrial Solutions Together
-        </h1>
-
-        <p className="mt-6 text-gray-400 max-w-4xl leading-relaxed">
-          Whether you are looking for investment casting waxes,
-          releasing agents, adhesives, or custom coating solutions,
-          our team is ready to assist you with reliable industrial
-          materials tailored to your manufacturing requirements.
-          We believe in building long-term relationships through
-          quality products, technical support, and consistent service.
-        </p>
-
-      </motion.section>
-
-      {/* MAIN SECTION */}
-      <motion.section
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12"
-      >
-
-        {/* LEFT — FORM */}
-        <motion.div
-          whileHover={{ y: -3 }}
-          transition={{ duration: 0.3 }}
-          className="border border-white/10 rounded-2xl p-8 bg-white/5 backdrop-blur-md"
-        >
-
-          <h2 className="text-2xl font-semibold">
-            Send an Inquiry
-          </h2>
-
-          <p className="text-gray-400 mt-3 text-sm">
-            Fill out the form and our team will get back to you shortly.
-          </p>
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-2">
+        <section aria-labelledby="inquiry-title" className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
+          <h2 id="inquiry-title" className="text-2xl font-semibold">Send an Inquiry</h2>
+          <p className="mt-3 text-sm text-gray-300">Fill out the form and our team will get back to you shortly.</p>
 
           {status === "success" ? (
             <div role="status" className="mt-8 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-6">
-              <CircleCheck className="text-emerald-400" size={28} />
+              <CircleCheck className="text-emerald-400" size={28} aria-hidden="true" />
               <h3 className="mt-3 text-lg font-semibold">Inquiry received</h3>
-              <p className="mt-2 text-sm text-gray-300 leading-relaxed">
-                Thank you. Our team has your requirements and will reply to the email address you provided.
-              </p>
-              <button
-                type="button"
-                onClick={() => setStatus("idle")}
-                className="mt-5 text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
-              >
-                Send another inquiry
-              </button>
+              <p className="mt-2 text-sm leading-relaxed text-gray-300">Thank you. Our team has your requirements and will reply to the email address you provided.</p>
+              <button type="button" onClick={() => setStatus("idle")} className="mt-5 text-sm text-blue-400 underline underline-offset-4 hover:text-blue-300">Send another inquiry</button>
             </div>
           ) : (
-          <form className="mt-8 space-y-5" onSubmit={onSubmit} noValidate>
+            <form ref={form} className="relative mt-8 space-y-5" onSubmit={onSubmit} noValidate>
+              {/* Honeypot: hidden from people, bots tend to fill it */}
+              <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                <label>Website <input type="text" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={onChange} /></label>
+              </div>
 
-            {/* Honeypot: hidden from people, bots tend to fill it */}
-            <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-              <label>
-                Website
-                <input type="text" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={onChange} />
+              {FIELDS.map(({ name, label: text, ...input }) => (
+                <div key={name}>
+                  <label htmlFor={name} className={label}>{text}</label>
+                  <input id={name} name={name} {...input} {...aria(name)} value={values[name]} onChange={onChange} className={inputClass(errors[name])} />
+                  <FieldError name={name} error={errors[name]} />
+                </div>
+              ))}
+
+              <div>
+                <label htmlFor="category" className={label}>Product category (optional)</label>
+                <select id="category" name="category" value={values.category} onChange={onChange} className={inputClass()}>
+                  <option value="">Select a category</option>
+                  {allCategories.map((c) => <option key={c.key} value={c.key}>{c.label}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="message" className={label}>Your requirements</label>
+                <textarea id="message" name="message" rows="5" required maxLength={5000} {...aria("message")} value={values.message} onChange={onChange} placeholder="Application, quantity, operating conditions…" className={`${inputClass(errors.message)} resize-y`} />
+                <FieldError name="message" error={errors.message} />
+              </div>
+
+              <label className="flex items-center gap-3 py-1 text-sm text-gray-300">
+                <input type="checkbox" name="sample" checked={values.sample} onChange={onChange} className="h-5 w-5 accent-blue-500" />
+                Request Free Material Evaluation Sample for Plant Testing
               </label>
-            </div>
 
-            {[
-              { name: "name", type: "text", placeholder: "Your Name", autoComplete: "name" },
-              { name: "email", type: "email", placeholder: "Your Email", autoComplete: "email" },
-              { name: "company", type: "text", placeholder: "Company Name (optional)", autoComplete: "organization" },
-            ].map((f) => (
-              <div key={f.name}>
-                <input
-                  {...f}
-                  aria-label={f.placeholder}
-                  aria-invalid={!!errors[f.name]}
-                  aria-describedby={errors[f.name] ? `${f.name}-err` : undefined}
-                  value={values[f.name]}
-                  onChange={onChange}
-                  maxLength={f.name === "email" ? 254 : 150}
-                  className={`${inputClass} ${errors[f.name] ? "border-red-400/60" : "border-white/10 focus:border-blue-500"}`}
-                />
-                {errors[f.name] && <p id={`${f.name}-err`} className="mt-1.5 text-sm text-red-400">{errors[f.name]}</p>}
-              </div>
-            ))}
-
-            <div>
-              <textarea
-                name="message"
-                rows="5"
-                placeholder="Tell us about your requirements..."
-                aria-label="Your requirements"
-                aria-invalid={!!errors.message}
-                aria-describedby={errors.message ? "message-err" : undefined}
-                value={values.message}
-                onChange={onChange}
-                maxLength={5000}
-                className={`${inputClass} resize-none ${errors.message ? "border-red-400/60" : "border-white/10 focus:border-blue-500"}`}
-              ></textarea>
-              {errors.message && <p id="message-err" className="mt-1.5 text-sm text-red-400">{errors.message}</p>}
-            </div>
-
-
-            <select
-              defaultValue=""
-              className="w-full bg-[#0B1C2C] text-white border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-blue-500 transition duration-300"
-            >
-              <option value="" disabled>Select Product Category of Interest</option>
-              <option value="waxes">Investment Casting Waxes (Filled, Unfilled, Soluble, Sticky)</option>
-              <option value="release">Industrial Release Agents (Rubber, Composite, Polyurethane)</option>
-              <option value="adhesives">Industrial Adhesives (Friction Materials, Rubber-to-Metal)</option>
-              <option value="coatings">Protective & Heat Resistant Coatings</option>
-            </select>
-
-            <div className="flex items-center space-x-3 pt-1">
-              <input type="checkbox" id="sampleReq" className="w-4 h-4 rounded text-blue-500 bg-white/10 border-white/20" />
-              <label htmlFor="sampleReq" className="text-sm text-gray-300">Request Free Material Evaluation Sample for Plant Testing</label>
-            </div>
-
-            <textarea
-              rows="5"
-              placeholder="Tell us about your requirements..."
-              className="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-blue-500 focus:bg-white/5 transition duration-300 resize-none"
-            ></textarea>
-
-            {status === "error" && serverError && (
-              <div role="alert" className="flex gap-3 rounded-lg border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
-                <CircleAlert size={18} className="mt-0.5 shrink-0 text-red-400" />
-                <p>
-                  {serverError} You can also email us at{" "}
-                  <a className="underline" href="mailto:info@chemtechspecialty.com">info@chemtechspecialty.com</a>.
-                </p>
-              </div>
-            )}
-
-
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 rounded-lg hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20 transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {status === "sending" ? (
-                <><LoaderCircle size={18} className="animate-spin" /> Sending…</>
-              ) : (
-                <><Send size={16} /> Send inquiry</>
+              {status === "error" && serverError && (
+                <div role="alert" className="flex gap-3 rounded-lg border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+                  <CircleAlert size={18} className="mt-0.5 shrink-0 text-red-400" aria-hidden="true" />
+                  <p>{serverError} You can also <a className="underline" href={mailto(values)}>email us your inquiry</a> or call <a className="underline" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.</p>
+                </div>
               )}
-            </button>
 
-          </form>
+              <button type="submit" disabled={status === "sending"} className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70">
+                {status === "sending" ? <><LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> Sending…</> : <><Send size={16} aria-hidden="true" /> Send inquiry</>}
+              </button>
+            </form>
           )}
+        </section>
 
-        </motion.div>
-
-        {/* RIGHT — MAP + INFO */}
         <div className="space-y-6">
-
-          {/* MAP */}
-          <motion.div
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.3 }}
-            className="border border-white/10 rounded-2xl overflow-hidden bg-white/5"
-          >
-
-            <iframe
-              title="map"
-              src="https://www.google.com/maps?q=Nashik,Maharashtra&output=embed"
-              width="100%"
-              height="320"
-              loading="lazy"
-              className="grayscale"
-            ></iframe>
-
-          </motion.div>
-
-          {/* CONTACT INFO */}
-          <motion.div
-            whileHover={{ y: -3 }}
-            transition={{ duration: 0.3 }}
-            className="border border-white/10 rounded-2xl p-6 bg-white/5 backdrop-blur-md"
-          >
-
-            <h3 className="text-xl font-semibold text-blue-400">
-              Contact Information
-            </h3>
-
-            <div className="mt-6 space-y-5">
-
-              <div>
-                <p className="text-gray-500 text-sm uppercase">
-                  Email
-                </p>
-
-                <p className="mt-1 text-gray-300">
-                  info@chemtechspecialty.com
-                </p>
-              </div>
-
-              <div>
-                <p className="text-gray-500 text-sm uppercase">
-                  Phone
-                </p>
-
-                <p className="mt-1 text-gray-300">
-                  +91 86687 58151
-                </p>
-              </div>
-
-              <div>
-                <p className="text-gray-500 text-sm uppercase">
-                  Address
-                </p>
-
-                <p className="mt-1 text-gray-300 leading-relaxed">
-                  Nashik, Maharashtra, India
-                </p>
-              </div>
-
-            </div>
-
-          </motion.div>
-
+          <section aria-labelledby="info-title" className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h2 id="info-title" className="text-xl font-semibold text-blue-400">Contact Information</h2>
+            <address className="mt-6 space-y-5 not-italic text-gray-200">
+              <p><span className="block text-sm uppercase text-gray-400">Email</span><a href={`mailto:${BUSINESS.email}`} className="inline-block py-1 hover:text-blue-400">{BUSINESS.email}</a></p>
+              <p><span className="block text-sm uppercase text-gray-400">Phone</span><a href={BUSINESS.phoneHref} className="inline-block py-1 hover:text-blue-400">{BUSINESS.phone}</a></p>
+              <p><span className="block text-sm uppercase text-gray-400">Address</span>{BUSINESS.street}, {BUSINESS.city} - {BUSINESS.postalCode}, {BUSINESS.region}, India</p>
+            </address>
+          </section>
+          <Map />
         </div>
-
-      </motion.section>
-
+      </div>
     </div>
-    </>
   );
-};
-
-export default Contact;
+}

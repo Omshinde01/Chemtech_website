@@ -1,13 +1,19 @@
 // Shared quote-form logic: validation, email formatting and sending.
-// Used by both the Express server (server/index.js) and other API handlers.
-
-import { Resend } from "resend";
+// Uses plain fetch to the Resend API, so it has no dependencies.
 
 const LIMITS = {
   name: 100,
   email: 254,
   company: 150,
   message: 5000,
+};
+
+const CATEGORIES = {
+  waxes: "Investment Casting Waxes",
+  release: "Release Agents",
+  adhesive: "Industrial Adhesives",
+  coating: "Protective Coatings",
+  custom: "Custom formulation",
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -34,12 +40,15 @@ const escapeHtml = (s) =>
       })[c]
   );
 
-export function validateQuote(body = {}) {
+function validateQuote(input) {
+  const body = input && typeof input === "object" ? input : {};
   const data = {
     name: clean(body.name, LIMITS.name).replace(/[\r\n]+/g, " "),
     email: clean(body.email, LIMITS.email).replace(/[\r\n]+/g, ""),
     company: clean(body.company, LIMITS.company).replace(/[\r\n]+/g, " "),
     message: clean(body.message, LIMITS.message),
+    category: Object.hasOwn(CATEGORIES, body.category) ? CATEGORIES[body.category] : "Not specified",
+    sample: body.sample === true ? "Yes" : "No",
   };
 
   const errors = {};
@@ -64,7 +73,7 @@ export function validateQuote(body = {}) {
   };
 }
 
-export function buildEmail(data, meta = {}) {
+function buildEmail(data, meta = {}) {
   const when = new Date().toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
     dateStyle: "medium",
@@ -83,6 +92,8 @@ export function buildEmail(data, meta = {}) {
     `Name:     ${data.name}`,
     `Email:    ${data.email}`,
     `Company:  ${company}`,
+    `Category: ${data.category}`,
+    `Sample:   ${data.sample}`,
     `Received: ${when} IST`,
     meta.ip ? `IP:       ${meta.ip}` : null,
     "",
@@ -129,6 +140,10 @@ export function buildEmail(data, meta = {}) {
 
           ${row("Company", escapeHtml(company))}
 
+          ${row("Category", escapeHtml(data.category))}
+
+          ${row("Sample requested", data.sample)}
+
           ${row("Received", `${escapeHtml(when)} IST`)}
         </table>
 
@@ -155,47 +170,24 @@ export function buildEmail(data, meta = {}) {
   };
 }
 
-// ----------------------------------------------------
-// RESEND EMAIL
-// ----------------------------------------------------
+async function sendQuoteEmail(data, meta) {
+  const { RESEND_API_KEY, MAIL_TO = "", MAIL_FROM } = process.env;
+  const to = MAIL_TO.split(",").map((v) => v.trim()).filter(Boolean);
+  if (!RESEND_API_KEY) throw new Error("Email is not configured: set RESEND_API_KEY.");
+  if (!to.length) throw new Error("Email is not configured: set MAIL_TO.");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export async function sendQuoteEmail(data, meta = {}) {
-  const to = process.env.MAIL_TO;
-
-  if (!process.env.RESEND_API_KEY) {
-    throw new Error("Email is not configured: set RESEND_API_KEY.");
-  }
-
-  if (!to) {
-    throw new Error("Email is not configured: set MAIL_TO.");
-  }
-
-  const { subject, text, html } = buildEmail(data, meta);
-
-  // For initial Resend testing, use onboarding@resend.dev.
-  // After verifying your domain in Resend, change this to:
-  // "Chemtech Specialty <info@chemtechspecialty.com>"
-  const from =
-    process.env.MAIL_FROM || "Chemtech Specialty <onboarding@resend.dev>";
-
-  const { data: result, error } = await resend.emails.send({
-    from,
-    to: [to],
-    replyTo: data.email,
-    subject,
-    text,
-    html,
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: MAIL_FROM || "Chemtech Specialty <onboarding@resend.dev>",
+      to,
+      reply_to: data.email,
+      ...buildEmail(data, meta),
+    }),
+    signal: AbortSignal.timeout(15_000),
   });
-
-  if (error) {
-    console.error("[quote] Resend error:", error);
-
-    throw new Error(`Resend error: ${error.message}`);
-  }
-
-  console.log("[quote] email sent successfully:", result?.id);
+  if (!res.ok) throw new Error(`Resend ${res.status}: ${(await res.text()).slice(0, 300)}`);
 }
 
 // ----------------------------------------------------

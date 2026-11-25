@@ -1,132 +1,85 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "Products", path: "/products" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" },
+];
+
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const location = useLocation();
+  const close = () => setMenuOpen(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Auto close mobile menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
-
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Products", path: "/products" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
-  ];
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0B1C2C]/80 backdrop-blur-lg shadow-lg border-b border-white/10"
-          : "bg-transparent"
+      aria-label="Main"
+      className={`fixed z-50 w-full border-b transition-colors duration-300 ${
+        scrolled || menuOpen ? "border-white/10 bg-[#0B1C2C]/95 shadow-lg" : "border-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
-        {/* Logo */}
-        <Link to="/" className="text-white text-xl font-semibold tracking-wide">
-          
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <Link to="/" onClick={close} className="text-xl font-semibold tracking-wide text-white">
           Chemtech <span className="text-blue-400">Specialty</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 text-gray-300 text-sm font-medium">
+        <div className="hidden items-center gap-8 text-sm font-medium md:flex">
           {navItems.map((item) => (
-            <Link
-              key={item.name}
+            <NavLink
+              key={item.path}
               to={item.path}
-              className={`relative group ${
-                location.pathname === item.path
-                  ? "text-white"
-                  : "text-gray-300"
-              }`}
+              end
+              className={({ isActive }) =>
+                `border-b-2 pb-0.5 transition-colors ${isActive ? "border-blue-400 text-white" : "border-transparent text-gray-300 hover:border-blue-400 hover:text-white"}`
+              }
             >
               {item.name}
-
-              {/* Underline */}
-              <span
-                className={`absolute left-0 -bottom-1 h-[2px] bg-blue-400 transition-all ${
-                  location.pathname === item.path
-                    ? "w-full"
-                    : "w-0 group-hover:w-full"
-                }`}
-              ></span>
-            </Link>
+            </NavLink>
           ))}
         </div>
 
-        {/* Desktop CTA */}
-        <Link
-          to="/contact"
-          className="hidden md:block bg-blue-600 px-5 py-2 rounded-lg text-white text-sm font-medium hover:bg-blue-700 transition shadow-md hover:shadow-blue-500/30"
-        >
+        <Link to="/contact" className="hidden rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-md transition hover:bg-blue-700 md:block">
           Get Quote
         </Link>
 
-        {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white"
-          onClick={() => setMenuOpen(!menuOpen)}
+          type="button"
+          className="flex h-11 w-11 items-center justify-center text-xl text-white md:hidden"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          onClick={() => setMenuOpen((o) => !o)}
         >
-          {menuOpen ? (
-            "✕"
-          ) : (
-            <div className="space-y-1">
-              <span className="block w-6 h-[2px] bg-white"></span>
-              <span className="block w-6 h-[2px] bg-white"></span>
-              <span className="block w-6 h-[2px] bg-white"></span>
-            </div>
+          {menuOpen ? "✕" : (
+            <span className="space-y-1" aria-hidden="true">
+              <span className="block h-[2px] w-6 bg-white" />
+              <span className="block h-[2px] w-6 bg-white" />
+              <span className="block h-[2px] w-6 bg-white" />
+            </span>
           )}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`md:hidden transition-all duration-300 overflow-hidden ${
-          menuOpen ? "max-h-[300px]" : "max-h-0"
-        }`}
-      >
-        <div className="bg-[#0B1C2C]/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4 text-gray-300 text-sm">
-
+      <div id="mobile-menu" hidden={!menuOpen} className="md:hidden">
+        <div className="flex flex-col gap-1 px-6 pb-5 text-sm">
           {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`hover:text-white ${
-                location.pathname === item.path ? "text-white" : ""
-              }`}
-            >
+            <NavLink key={item.path} to={item.path} end onClick={close} className={({ isActive }) => `py-3 ${isActive ? "text-white" : "text-gray-300 hover:text-white"}`}>
               {item.name}
-            </Link>
+            </NavLink>
           ))}
-
-          {/* Mobile CTA */}
-          <Link
-            to="/contact"
-            className="mt-2 bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-700 transition text-center"
-          >
+          <Link to="/contact" onClick={close} className="mt-2 rounded-lg bg-blue-600 px-4 py-3 text-center font-medium text-white hover:bg-blue-700">
             Get Quote
           </Link>
-
         </div>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

@@ -4,11 +4,8 @@
  * Used by /products page, category pages, and individual product pages.
  */
 
-export const SITE_URL = "https://chemtechspecialty.com";
-export const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-
 // ─── Investment Casting Waxes ─────────────────────────────────────────────────
-export const waxProducts = [
+const waxProducts = [
   {
     slug: "filled-wax",
     title: "Filled Investment Casting Wax",
@@ -19,7 +16,7 @@ export const waxProducts = [
     metaTitle:
       "Filled Investment Casting Wax | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Filled Investment Casting Wax provides superior structural rigidity and dimensional stability. Ideal for automotive, aerospace, and precision engineering castings. Request a quote.",
+      "Filled investment casting wax, 68–74°C melting point, under 0.8% shrinkage. Rigid, stable patterns for automotive and aerospace castings. Request a quote.",
     specs: {
       "Melting Point": "68°C – 74°C",
       "Ash Content": "< 0.015% (Ultra-Clean Burnout)",
@@ -49,7 +46,7 @@ export const waxProducts = [
     metaTitle:
       "Unfilled Investment Casting Wax | Chemtech Specialty",
     metaDescription:
-      "Unfilled Investment Casting Wax by Chemtech Specialty delivers mirror-smooth surface finish and near-zero ash residue for intricate castings. Contact us for samples and technical data sheets.",
+      "Unfilled investment casting wax with under 0.008% ash and a mirror-smooth finish for thin-wall, intricate castings. Request samples and data sheets.",
     specs: {
       "Drop Melting Point": "72°C – 78°C",
       "Ash Content": "< 0.008% (Negligible Residue)",
@@ -76,9 +73,9 @@ export const waxProducts = [
     summary:
       "Fast-dissolving core wax designed for intricate internal hollows and undercut channels.",
     metaTitle:
-      "Water Soluble Investment Casting Wax | Chemtech Specialty",
+      "Water Soluble Casting Wax for Cores | Chemtech Specialty",
     metaDescription:
-      "Water Soluble Casting Wax from Chemtech Specialty dissolves rapidly in warm water enabling clean internal core removal for hollow aerofoils, valve bodies, and complex passages.",
+      "Water soluble wax for internal cores in investment casting. Dissolves in warm water in 15–25 minutes, residue-free. Request a sample or quote.",
     specs: {
       "Dissolution Speed": "Rapid in warm water (15–25 mins)",
       Environmental: "100% Non-toxic & environmentally safe",
@@ -105,9 +102,9 @@ export const waxProducts = [
     summary:
       "Fast-setting high-tack adhesion for dependable pattern tree and sprue runner assembly.",
     metaTitle:
-      "Sticky Wax for Investment Casting | Pattern Assembly | Chemtech Specialty",
+      "Sticky Wax for Pattern Assembly | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Sticky Wax provides instantaneous high-tack bonding for wax pattern tree assembly, sprue runners, and gates in investment casting foundries.",
+      "Sticky wax for investment casting pattern trees, runners and gates. Sets in 3–6 seconds with a rigid joint and clean meltout. Request a quote.",
     specs: {
       "Setting Time": "3 – 6 seconds (Immediate Tack)",
       "Adhesion Strength": "Rigid, fracture-resistant joint",
@@ -135,9 +132,9 @@ export const waxProducts = [
     summary:
       "Smoothly blendable formulation to repair pattern defects, knit lines, and handling scars.",
     metaTitle:
-      "Investment Casting Repair Wax | Surface Finishing | Chemtech Specialty",
+      "Repair Wax for Investment Casting | Chemtech Specialty",
     metaDescription:
-      "Repair Wax by Chemtech Specialty is a ductile, workable formulation for correcting surface defects, knit lines, and sink marks on investment casting wax patterns before ceramic shell dipping.",
+      "Workable repair wax that corrects knit lines, sink marks and handling damage on wax patterns and blends invisibly before shell dipping. Request a sample.",
     specs: {
       "Workability Range": "Plastic and pliable at 25°C – 40°C",
       "Carving Quality": "Toolable without chipping or flaking",
@@ -164,9 +161,9 @@ export const waxProducts = [
     summary:
       "Precision surface preparation agent for investment casting wax patterns — cleans, conditions, and activates for uniform, defect-free primary ceramic shell adhesion.",
     metaTitle:
-      "Wax Pattern Cleaner & Activator | Surface Preparation | Chemtech Specialty",
+      "Wax Pattern Cleaner & Activator | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Wax Pattern Cleaner & Activator removes mold release residues and surface contaminants from wax patterns, activating the surface for consistent, uniform primary slurry adhesion and reduced coating-related defects.",
+      "Wax pattern cleaner that removes release residue and activates the surface for uniform slurry wetting and fewer ceramic shell defects. Request a quote.",
     specs: {
       "Application Method": "Gentle wipe or controlled immersion",
       "Drying Time": "Fast-evaporating; residue-free surface",
@@ -194,9 +191,9 @@ export const waxProducts = [
     summary:
       "Advanced nano polymer additive for ceramic slurry systems — improves shell strength, promotes faster and more uniform drying, and enhances mould permeability for consistent casting quality.",
     metaTitle:
-      "Nano Polymer Additive for Ceramic Slurry | Shell Strength | Chemtech Specialty",
+      "Nano Polymer Additive for Ceramic Slurry | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Nano Polymer Additive for Ceramic Slurry improves modulus of rupture, promotes uniform shell drying, enhances permeability, and reduces cracking tendency in investment casting ceramic shell systems.",
+      "Nano polymer additive for investment casting slurry: stronger shells, faster uniform drying, better permeability and less cracking. Request a data sheet.",
     specs: {
       "Additive Type": "Nano polymer dispersion for aqueous slurry systems",
       "Dosage Form": "Liquid additive; compatible with standard slurry mixing",
@@ -219,7 +216,7 @@ export const waxProducts = [
 ];
 
 // ─── Release Agents ───────────────────────────────────────────────────────────
-export const releaseProducts = [
+const releaseProducts = [
   {
     slug: "rubber-release-agent",
     title: "Rubber Release Agent",
@@ -228,9 +225,9 @@ export const releaseProducts = [
     summary:
       "Semi-permanent non-stick release barrier ensuring clean demolding and extended mold life.",
     metaTitle:
-      "Rubber Release Agent | Industrial Rubber Molding | Chemtech Specialty",
+      "Rubber Mold Release Agent | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Rubber Release Agents provide semi-permanent non-stick barriers for clean demolding of O-rings, seals, gaskets, and technical rubber goods. Extends tooling life significantly.",
+      "Semi-permanent rubber mold release agent, up to 230°C, for O-rings, seals and gaskets. Multiple releases per coat, less mold fouling. Request a quote.",
     specs: {
       "Thermal Resistance": "Operational up to 230°C",
       "Mold Compatibility": "Steel, aluminum, nickel, chrome tooling",
@@ -257,9 +254,9 @@ export const releaseProducts = [
     summary:
       "Engineered for clean release in advanced carbon fiber, epoxy, and prepreg manufacturing.",
     metaTitle:
-      "Composite Release Agent | Carbon Fibre & Epoxy | Chemtech Specialty",
+      "Composite Release Agent, Carbon & Epoxy | Chemtech Specialty",
     metaDescription:
-      "Composite Release Agents from Chemtech Specialty deliver Class-A surface finishes for aerospace carbon fibre, epoxy panels, and autoclave-cured composites without silicone contamination.",
+      "Silicone-free composite release agent for carbon fibre, epoxy and prepreg. Autoclave safe to 260°C with a Class-A finish. Request a sample or quote.",
     specs: {
       "Thermal Rating": "Autoclave safe up to 260°C",
       "Resin Systems": "Epoxy, phenolic, bismaleimide, vinyl ester",
@@ -286,9 +283,9 @@ export const releaseProducts = [
     summary:
       "High-efficiency demolding for flexible foam, rigid insulation, RIM, and cast elastomers.",
     metaTitle:
-      "Polyurethane Release Agent | PU Foam & RIM | Chemtech Specialty",
+      "Polyurethane (PU) Release Agent | Chemtech Specialty",
     metaDescription:
-      "Polyurethane Release Agents by Chemtech Specialty provide superior demolding for flexible PU foam, rigid insulation, RIM components, and cast elastomers with minimal mold residue.",
+      "PU release agent for flexible foam, rigid insulation, RIM and cast elastomers. Fewer pinholes, short cycles, low residue. Request a sample or quote.",
     specs: {
       Application: "Low-pressure air spray or fine wipe",
       "System Compatibility": "Flexible foam, rigid PU, microcellular, RIM",
@@ -317,7 +314,7 @@ export const releaseProducts = [
     metaTitle:
       "Rubber-to-Metal Release Agent | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Rubber-to-Metal Release Agents prevent adhesive contamination on adjacent tooling surfaces during bonded rubber-to-metal vulcanization, protecting mold geometry and part quality.",
+      "Selective release agent for bonded rubber-metal molding. Releases parting surfaces without reducing bond strength, up to 200°C. Request a quote.",
     specs: {
       Application: "Spray or brush onto parting surfaces",
       "Selective Action": "Releases tool steel; does not contaminate bond interface",
@@ -344,9 +341,9 @@ export const releaseProducts = [
     summary:
       "High-temperature release agent for clean separation of metal castings and die-cast components from steel tooling.",
     metaTitle:
-      "Metal-to-Metal Release Agent | Die Casting | Chemtech Specialty",
+      "Die Casting Release Agent | Chemtech Specialty",
     metaDescription:
-      "Metal-to-Metal Release Agents from Chemtech Specialty enable clean separation of aluminum, zinc, and ferrous castings from steel tooling in high-temperature die casting and press forming operations.",
+      "Metal-to-metal release agent for aluminium and zinc die casting and press forming, up to 650°C. Prevents soldering and die erosion. Request a quote.",
     specs: {
       "Operating Temperature": "Up to 650°C for die casting applications",
       "Substrate Metals": "Aluminum, zinc, magnesium, ferrous alloys",
@@ -368,7 +365,7 @@ export const releaseProducts = [
 ];
 
 // ─── Adhesives ────────────────────────────────────────────────────────────────
-export const adhesiveProducts = [
+const adhesiveProducts = [
   {
     slug: "rubber-to-metal-adhesive",
     title: "Rubber-to-Metal Adhesive",
@@ -377,9 +374,9 @@ export const adhesiveProducts = [
     summary:
       "High-strength vulcanization bonding agent for dynamic shock and vibration applications.",
     metaTitle:
-      "Rubber-to-Metal Adhesive | Industrial Bonding | Chemtech Specialty",
+      "Rubber-to-Metal Bonding Adhesive | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Rubber-to-Metal Adhesives deliver >16 MPa bond strength for engine mounts, suspension bushings, anti-vibration mounts, and industrial bonded assemblies.",
+      "Rubber-to-metal bonding adhesive, over 16 MPa with 100% rubber tear, for engine mounts, bushings and anti-vibration mounts. Request a quote.",
     specs: {
       "Bond Strength": "> 16 MPa (100% Rubber Tear)",
       "Service Temperature": "-40°C to +150°C continuous",
@@ -408,7 +405,7 @@ export const adhesiveProducts = [
     metaTitle:
       "Metal-to-Metal Structural Adhesive | Chemtech Specialty",
     metaDescription:
-      "Metal-to-Metal Structural Adhesives from Chemtech Specialty deliver >22 MPa lap shear strength to replace welds and bolts in structural assemblies, trailers, HVAC, and precision machinery.",
+      "Structural metal adhesive with over 22 MPa lap shear (ASTM D1002) and 2 mm gap fill. An alternative to welds, rivets and bolts. Request a quote.",
     specs: {
       "Tensile Lap Shear": "> 22 MPa (ASTM D1002)",
       "Gap Filling": "Up to 2.0 mm with thixotropic viscosity",
@@ -435,9 +432,9 @@ export const adhesiveProducts = [
     summary:
       "High-temperature thermoset adhesive engineered for automotive and rail brake pad bonding.",
     metaTitle:
-      "Friction Material Adhesive | Brake Pad Bonding | Chemtech Specialty",
+      "Friction Material & Brake Adhesive | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Friction Material Adhesives withstand up to 380°C for reliable brake pad and brake shoe bonding in automotive, commercial vehicles, and rail transit applications.",
+      "Thermosetting friction material adhesive for brake pads, shoes and clutches. Holds shear strength up to 380°C. Request a sample or data sheet.",
     specs: {
       "Thermal Peak Resistance": "Up to 380°C under severe braking friction",
       "Shear Adhesion": "Complies with ISO and SAE automotive brake standards",
@@ -459,7 +456,7 @@ export const adhesiveProducts = [
 ];
 
 // ─── Coatings ─────────────────────────────────────────────────────────────────
-export const coatingProducts = [
+const coatingProducts = [
   {
     slug: "anti-corrosion-coating",
     title: "Anti-Corrosion Coating",
@@ -468,9 +465,9 @@ export const coatingProducts = [
     summary:
       "Heavy-duty barrier coating providing superior salt spray and chemical corrosion protection.",
     metaTitle:
-      "Anti-Corrosion Coating for Industrial Metals | Chemtech Specialty",
+      "Anti-Corrosion Metal Coating | Chemtech Specialty",
     metaDescription:
-      "Anti-Corrosion Coatings from Chemtech Specialty provide >1200-hour salt spray resistance for structural steel, offshore hardware, industrial valves, and automotive chassis components.",
+      "Anti-corrosion coating with over 1,200 hours salt spray resistance (ASTM B117) for structural steel, valves and chassis parts. Request a quote.",
     specs: {
       "Salt Spray Resistance": "> 1,200 hours (ASTM B117 pass)",
       "Film Formation": "Dense, pore-free passivating barrier",
@@ -497,9 +494,9 @@ export const coatingProducts = [
     summary:
       "Ceramic-reinforced protective coating maintaining integrity under continuous high temperatures.",
     metaTitle:
-      "Heat Resistant Industrial Coating up to 650°C | Chemtech Specialty",
+      "Heat Resistant Coating up to 650°C | Chemtech Specialty",
     metaDescription:
-      "Heat Resistant Coatings from Chemtech Specialty withstand continuous temperatures up to 650°C for exhaust systems, furnaces, boilers, heat exchangers, and high-temperature industrial equipment.",
+      "Silicone-ceramic heat resistant coating for continuous 650°C service on exhausts, furnaces, boilers and heat exchangers. Request a quote.",
     specs: {
       "Operating Temperature": "Continuous up to 650°C (1200°F)",
       Chemistry: "Silicone ceramic crosslinked matrix",
@@ -526,9 +523,9 @@ export const coatingProducts = [
     summary:
       "Ultra-hard surface treatment engineered to resist abrasion, scratching, and chemical wear.",
     metaTitle:
-      "Surface Protection Coating | Abrasion & Wear Resistance | Chemtech Specialty",
+      "Wear Resistant Surface Coating | Chemtech Specialty",
     metaDescription:
-      "Surface Protection Coatings from Chemtech Specialty offer Shore D 85+ hardness and high Taber abrasion resistance for tooling dies, machine shafts, guide rails, and precision components.",
+      "Wear and abrasion resistant surface coating, Shore D 85+ / 4H+, for tooling dies, shafts, guide rails and wear plates. Request a quote.",
     specs: {
       "Hardness Rating": "Shore D 85+ / Pencil Hardness 4H+",
       "Wear Resistance": "High Taber abrasion resistance index",
@@ -549,6 +546,52 @@ export const coatingProducts = [
   },
 ];
 
+// ─── Custom formulation services (no product pages of their own) ──────────────
+const customProducts = [
+  {
+    title: "Tailored Industrial Coatings",
+    tag: "Custom R&D",
+    summary: "Custom chemical formulations developed to exact client process and regulatory specs.",
+    specs: {
+      "Development Path": "Laboratory proof-of-concept to plant qualification",
+      "Chemistry Options": "Solvent-borne, waterborne, 100% solids, UV-curable",
+      "Regulatory Standards": "Compliant with RoHS, REACH, and VOC targets",
+      "Batch Volumes": "Flexible pilot batches to multi-ton bulk production",
+      "Key Characteristic": "Engineered for proprietary customer parameters",
+    },
+    intro: "When standard catalogue formulations fail to meet unconventional operating parameters, our technical R&D team works side-by-side with clients to engineer bespoke coatings with customized viscosity, cure speed, and resilience.",
+    points: [
+      "In-depth technical consultation and analytical substrate evaluation",
+      "Iterative laboratory synthesis followed by real-world factory qualification trials",
+      "Formulation flexibility across waterborne, solvent-borne, or zero-VOC solids",
+      "Complete Technical Data Sheets (TDS) and Safety Data Sheets (SDS) provided",
+      "Strict batch-to-batch quality control and certificate of analysis (COA) with each lot",
+    ],
+    use: "Designed for unique process requirements in aerospace, defense, renewable energy, electronics encapsulation, and harsh environment manufacturing.",
+  },
+  {
+    title: "Application-Specific Solutions",
+    tag: "Bespoke Engineering",
+    summary: "Comprehensive material engineering integrating products directly with customer line setups.",
+    specs: {
+      "Engineering Scope": "Substrate prep, application tooling, curing parameters",
+      "Material Breadth": "Metals, engineered composites, ceramics, elastomers",
+      "Audit Support": "On-site production audits and process parameter tuning",
+      "Supply Stability": "Guaranteed batch repeatability and reserved inventory",
+      "Key Characteristic": "Turnkey performance guarantee for production lines",
+    },
+    intro: "We provide end-to-end material engineering that goes beyond chemistry to encompass application methodology, spray equipment selection, curing cycles, and quality control metrics directly on your factory floor.",
+    points: [
+      "Comprehensive process optimization reducing cycle times and scrap rates",
+      "On-site technical troubleshooting and trial coordination by material engineers",
+      "Multi-substrate compatibility across metals, composites, polymers, and glass",
+      "Scalable production capacity from initial qualification runs to steady supply",
+      "Dedicated technical support team responsive to process line adaptations",
+    ],
+    use: "Deployed in high-throughput automotive manufacturing lines, specialized defense contractors, and precision casting foundries.",
+  },
+];
+
 // ─── Category registry ────────────────────────────────────────────────────────
 export const categories = [
   {
@@ -558,11 +601,10 @@ export const categories = [
     shortLabel: "Waxes",
     number: "01",
     accent: "#3B82F6",
-    accentMuted: "rgba(59,130,246,0.12)",
     metaTitle:
-      "Investment Casting Wax Supplier in India | Chemtech Specialty",
+      "Investment Casting Wax Manufacturer India | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty supplies filled, unfilled, water soluble, sticky, and repair investment casting waxes to foundries across India. Request technical data sheets or a trial sample.",
+      "Filled, unfilled, water soluble, sticky and repair waxes for investment casting foundries. Made in Nashik, supplied across India. Request a TDS or trial sample.",
     description:
       "Precision investment casting waxes engineered for dimensional stability, low thermal shrinkage, and zero-ash burnout. Formulated for foundries producing critical aerospace, automotive, and industrial components.",
     products: waxProducts,
@@ -574,11 +616,10 @@ export const categories = [
     shortLabel: "Release",
     number: "02",
     accent: "#22D3EE",
-    accentMuted: "rgba(34,211,238,0.12)",
     metaTitle:
-      "Industrial Release Agents | Rubber, Composite & PU | Chemtech Specialty",
+      "Industrial Mold Release Agents India | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty Release Agents cover rubber molding, composite manufacturing, polyurethane foam, rubber-to-metal, and die casting applications. Request a sample or technical consultation.",
+      "Mold release agents for rubber, composite, polyurethane, bonded rubber-metal and die casting. Clean demolding and longer tool life. Request a sample.",
     description:
       "Semi-permanent and sacrificial mold release agents designed for clean demolding, superior surface finish, and extended tooling life across rubber molding, composite manufacturing, and polyurethane systems.",
     products: releaseProducts,
@@ -590,11 +631,10 @@ export const categories = [
     shortLabel: "Adhesives",
     number: "03",
     accent: "#F59E0B",
-    accentMuted: "rgba(245,158,11,0.12)",
     metaTitle:
-      "Industrial Adhesives | Rubber-to-Metal, Structural & Friction | Chemtech Specialty",
+      "Industrial Bonding Adhesives India | Chemtech Specialty",
     metaDescription:
-      "High-performance industrial adhesives from Chemtech Specialty for rubber-to-metal bonding, structural metal joints, and friction material brake pad applications. Contact us for samples.",
+      "Industrial adhesives for rubber-to-metal bonding, structural metal joints and brake friction materials. Made for high shear and fatigue. Request samples.",
     description:
       "High-performance structural adhesives and vulcanizing bonding agents delivering exceptional peel, shear, and fatigue resistance for rubber-to-metal assemblies, structural metal joints, and friction brake pads.",
     products: adhesiveProducts,
@@ -606,16 +646,26 @@ export const categories = [
     shortLabel: "Coatings",
     number: "04",
     accent: "#10B981",
-    accentMuted: "rgba(16,185,129,0.12)",
     metaTitle:
-      "Protective Industrial Coatings | Anti-Corrosion & Heat Resistant | Chemtech Specialty",
+      "Protective Metal Coatings India | Chemtech Specialty",
     metaDescription:
-      "Chemtech Specialty provides anti-corrosion coatings, heat resistant coatings up to 650°C, and surface protection coatings for industrial metals, infrastructure, and manufacturing equipment.",
+      "Anti-corrosion, heat resistant (to 650°C) and wear resistant coatings for industrial metals and equipment. Made in Nashik, India. Request a quote.",
     description:
       "Protective metal surface treatments engineering robust barriers against severe atmospheric corrosion, high-temperature oxidation up to 650°C, and heavy mechanical abrasive wear.",
     products: coatingProducts,
   },
 ];
+
+export const customCategory = {
+  key: "custom",
+  label: "Custom Formulations",
+  shortLabel: "Custom",
+  number: "05",
+  accent: "#A78BFA",
+  description:
+    "Bespoke chemical R&D and tailored formulations for challenging industrial applications requiring specialized viscosity, cure kinetics, extreme temperature resistance, or regulatory compliance.",
+  products: customProducts,
+};
 
 // Helper: find category by slug
 export function getCategoryBySlug(slug) {

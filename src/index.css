@@ -1,49 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html {
-  scroll-behavior: smooth;
+
+html { scroll-behavior: smooth; }
+body { background: #071523; color: #E8EFF8; }
+
+.skip-link {
+  position: fixed; top: -100px; left: 16px; z-index: 100;
+  padding: 10px 16px; border-radius: 8px; background: #2563eb; color: #fff;
 }
-@keyframes flow {
-  0% {
-    transform: translateX(-100%);
+.skip-link:focus { top: 16px; }
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #60A5FA; outline-offset: 2px;
+}
+
+/* Accent helpers: each section or card sets --accent */
+.a-text { color: var(--accent); }
+.a-solid { background: var(--accent); }
+.a-chip {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.a-ring:focus-visible { outline-color: var(--accent); }
+.a-rule { border-bottom: 2px solid color-mix(in srgb, var(--accent) 22%, transparent); }
+.a-card {
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.08);
+  transition: background .2s, border-color .2s;
+}
+.a-card:hover, .a-card:focus-within {
+  background: rgba(255,255,255,.05);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+@keyframes hero-in { from { transform: translateY(24px); } to { transform: none; } }
+@keyframes hs-in { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
+@keyframes stage-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+
+.hs-in { animation: hs-in .4s ease-out both; }
+
+/* Text is never hidden while waiting for JavaScript: motion is CSS only. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-in { animation: hero-in .7s ease-out; }
+  .stage-in { animation: stage-in .45s ease-out both; }
+  .marquee { animation: marquee 40s linear infinite; }
+  .marquee-reverse { animation-direction: reverse; animation-duration: 32s; }
+  .marquee:hover { animation-play-state: paused; }
+  @supports (animation-timeline: view()) {
+    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 45%; }
   }
-  100% {
-    transform: translateX(300%);
-  }
 }
-
-.animate-flow {
-  animation: flow 3s linear infinite;
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: translateY(10px) translateX(-50%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) translateX(-50%);
-  }
-}
-
-.animate-fade {
-  animation: fade 0.3s ease-out;
-}
-/* Casting journey */
-@keyframes hs-in {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.hs-in { animation: hs-in 0.4s ease-out both; }
-
-@keyframes stage-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.stage-in { animation: stage-in 0.45s ease-out both; }
-
 @media (prefers-reduced-motion: reduce) {
-  .hs-in, .stage-in { animation: none; }
+  html { scroll-behavior: auto; }
+  .hs-in { animation: none; }
 }

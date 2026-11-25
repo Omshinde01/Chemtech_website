@@ -16,7 +16,9 @@ app.use(express.json({ limit: "20kb" }));
 
 // Optional: only needed if the React site is hosted on a different domain than this server.
 if (process.env.CORS_ORIGIN) {
-  const allowed = process.env.CORS_ORIGIN.split(",").map((s) => s.trim());
+  const allowed = process.env.CORS_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean)
+    // The apex and www hosts both serve the site, so allow either when one is listed.
+    .flatMap((o) => [o, o.includes("://www.") ? o.replace("://www.", "://") : o.replace("://", "://www.")]);
   app.use("/api", (req, res, next) => {
     const origin = req.headers.origin;
     if (origin && allowed.includes(origin)) {
@@ -45,41 +47,20 @@ app.post("/api/quote", quoteLimiter, async (req, res) => {
 // In production, serve the built React app from the same server.
 const dist = path.join(__dirname, "..", "dist");
 if (fs.existsSync(dist)) {
-  // 301 redirect legacy query URLs to clean canonical URLs
-  app.get("/products", (req, res, next) => {
-    const cat = req.query.category;
-    if (cat === "waxes") return res.redirect(301, "/investment-casting-wax");
-    if (cat === "release") return res.redirect(301, "/release-agents");
-    if (cat === "adhesive") return res.redirect(301, "/adhesives");
-    if (cat === "coating") return res.redirect(301, "/coatings");
-    next();
-  });
+  app.use("/assets", express.static(path.join(dist, "assets"), { immutable: true, maxAge: "1y" }));
+  // redirect: false keeps /about from becoming /about/, which isn't the canonical URL
+  app.use(express.static(dist, { redirect: false }));
 
-  app.use(express.static(dist));
-
-  // Serve route-specific prerendered HTML or return HTTP 404 with 404.html
   app.use((req, res, next) => {
     if (req.method !== "GET" || req.path.startsWith("/api")) return next();
-
-    const cleanPath = req.path.replace(/^\//, "").replace(/\/$/, "");
-    const candidatePath = path.join(dist, cleanPath, "index.html");
-
-    if (cleanPath && fs.existsSync(candidatePath)) {
-      return res.sendFile(candidatePath);
-    }
-
-    // If requested path is not found, serve 404.html with genuine HTTP 404
-    const notFoundPage = path.join(dist, "404.html");
-    if (fs.existsSync(notFoundPage)) {
-      return res.status(404).sendFile(notFoundPage);
-    }
-
-    res.status(404).sendFile(path.join(dist, "index.html"));
+    const page = path.join(dist, path.normalize(req.path), "index.html");
+    if (page.startsWith(dist + path.sep) && fs.existsSync(page)) return res.sendFile(page);
+    res.status(404).sendFile(path.join(dist, "404.html"));
   });
 }
 
 // Malformed JSON etc.
 // eslint-disable-next-line no-unused-vars -- Express needs the 4-argument signature to treat this as an error handler
-app.use((err, _req, res, _next) => res.status(400).json({ ok: false, error: "Invalid request." }));
+app.use((err, _req, res, _next) => res.status(err.status || 500).json({ ok: false, error: "Invalid request." }));
 
 app.listen(PORT, () => console.log(`Chemtech server listening on http://localhost:${PORT}`));

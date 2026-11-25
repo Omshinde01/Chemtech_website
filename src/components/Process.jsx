@@ -1,5 +1,3 @@
-import React from "react";
-
 const steps = [
   {
     title: "Requirement Analysis",
@@ -34,7 +32,7 @@ const Process = () => {
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-4xl font-bold">How We Work</h2>
-        <p className="mt-4 text-gray-400">
+        <p className="mt-4 text-gray-300">
           A structured approach ensuring quality, performance, and reliability.
         </p>
       </div>

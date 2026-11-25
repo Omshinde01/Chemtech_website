@@ -17,7 +17,6 @@ console.log("RUNNING AUTOMATED TECHNICAL SEO AUDIT");
 console.log("==========================================\n");
 
 let passed = 0;
-let warnings = 0;
 let errors = 0;
 
 function assert(condition, message) {
@@ -87,14 +86,25 @@ console.log(`Found ${htmlFiles.length} HTML files in dist/ to audit:\n`);
 htmlFiles.forEach((filePath) => {
   const relPath = path.relative(distDir, filePath);
   const content = fs.readFileSync(filePath, "utf-8");
-  const is404 = relPath.includes("404");
+  const is404 = relPath === "404.html";
+  for (const [label, re, want] of [
+    ["<title>", /<title/g, 1],
+    ["meta description", /<meta[^>]*name="description"/g, 1],
+    ["canonical", /<link[^>]*rel="canonical"/g, is404 ? 0 : 1],
+    ["robots meta", /<meta[^>]*name="robots"/g, 1],
+    ["<h1>", /<h1[\s>]/g, 1],
+    ["<main>", /<main[\s>]/g, 1],
+  ]) {
+    const n = (content.match(re) || []).length;
+    assert(n === want, `Exactly ${want} ${label} (found ${n})`);
+  }
 
   console.log(`Checking: ${relPath}`);
 
   // Title check
-  const titleMatch = content.match(/<title>(.*?)<\/title>/i);
+  const titleMatch = content.match(/<title[^>]*>(.*?)<\/title>/i);
   const title = titleMatch ? titleMatch[1] : null;
-  assert(title && title.length > 5, `Has non-empty <title>: "${title}"`);
+  assert(title && title.length > 5 && title.replace(/&amp;/g, "&").length <= 65, `Has non-empty <title>: "${title}"`);
 
   if (!is404) {
     if (titlesSeen.has(title)) {
@@ -108,7 +118,7 @@ htmlFiles.forEach((filePath) => {
   // Description check
   const descMatch = content.match(/<meta\s+name="description"\s+content="(.*?)"/i);
   const description = descMatch ? descMatch[1] : null;
-  assert(description && description.length > 20, `Has descriptive meta description (${description?.length || 0} chars)`);
+  assert(description && description.length > 20 && description.length <= 170, `Has descriptive meta description (${description?.length || 0} chars)`);
 
   if (!is404 && description) {
     if (descriptionsSeen.has(description)) {
@@ -122,7 +132,16 @@ htmlFiles.forEach((filePath) => {
   // Canonical check
   const canonicalMatch = content.match(/<link\s+rel="canonical"\s+href="(.*?)"/i);
   const canonical = canonicalMatch ? canonicalMatch[1] : null;
-  assert(canonical && canonical.startsWith("https://chemtechspecialty.com"), `Has canonical URL: ${canonical}`);
+  if (!is404) {
+    const route = "/" + relPath.replace(/\\/g, "/").replace(/\/?index\.html$/, "");
+    assert(canonical === `https://chemtechspecialty.com${route}`, `Canonical matches its own URL: ${canonical}`);
+    assert(locMatches.includes(canonical), "Listed in sitemap.xml");
+  }
+  // Every internal link must point at a page that was built
+  const broken = [...new Set([...content.matchAll(/href="(\/[^"#?]*)[^"]*"/g)].map((m) => m[1]))].filter(
+    (h) => !fs.existsSync(path.join(distDir, h, "index.html")) && !(fs.existsSync(path.join(distDir, h)) && fs.statSync(path.join(distDir, h)).isFile())
+  );
+  assert(broken.length === 0, `No broken internal links ${broken.join(" ")}`);
 
   if (!is404 && canonical) {
     if (canonicalsSeen.has(canonical)) {
@@ -149,8 +168,8 @@ htmlFiles.forEach((filePath) => {
   }
 
   // JSON-LD schema check
-  const jsonLdMatches = [...content.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi)];
-  assert(jsonLdMatches.length > 0, `Contains ${jsonLdMatches.length} JSON-LD structured data script(s)`);
+  const jsonLdMatches = [...content.matchAll(/<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  assert(is404 || jsonLdMatches.length === 1, `Contains ${jsonLdMatches.length} JSON-LD structured data script(s)`);
 
   jsonLdMatches.forEach((match, idx) => {
     try {
@@ -169,7 +188,7 @@ htmlFiles.forEach((filePath) => {
 });
 
 console.log("==========================================");
-console.log(`AUDIT COMPLETE: ${passed} passed, ${warnings} warnings, ${errors} errors`);
+console.log(`AUDIT COMPLETE: ${passed} passed, ${errors} errors`);
 console.log("==========================================");
 
 if (errors > 0) {

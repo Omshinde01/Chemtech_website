@@ -1,0 +1,12 @@
+{
+  // Cloudflare static hosting for the site. The quote API (server/) runs separately on Render.
+  // "name" must match the existing Worker in the Cloudflare dashboard.
+  "name": "chemtech-website",
+  "compatibility_date": "2026-05-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve /about directly (matching canonical URLs) and return real 404s.
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

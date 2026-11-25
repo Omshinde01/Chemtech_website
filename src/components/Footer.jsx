@@ -1,122 +1,56 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import { categories } from "../data/productData";
+import { BUSINESS } from "../lib/site";
 
-const Footer = () => {
+const quickLinks = [["/", "Home"], ["/products", "Product Catalogue"], ["/about", "About Company"], ["/contact", "Contact & RFQ"]];
+const KEY = ["filled-wax", "water-soluble-wax", "rubber-release-agent", "composite-release-agent", "rubber-to-metal-adhesive", "anti-corrosion-coating", "heat-resistant-coating"];
+const keyProducts = categories.flatMap((c) =>
+  c.products.filter((p) => KEY.includes(p.slug)).map((p) => [`/${c.slug}/${p.slug}`, p.title])
+);
+
+function Column({ title, children }) {
   return (
-    <footer className="bg-[#081521] text-gray-300 pt-16 pb-8 px-6 border-t border-white/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+    <div>
+      <p className="mb-4 font-semibold text-white">{title}</p>
+      {children}
+    </div>
+  );
+}
 
-        {/* Company Overview & Brand Authority */}
+const Links = ({ items }) => (
+  <ul className="space-y-1 text-sm">
+    {items.map(([to, label]) => (
+      <li key={to}><Link to={to} className="inline-block py-1 transition hover:text-blue-400">{label}</Link></li>
+    ))}
+  </ul>
+);
+
+export default function Footer() {
+  return (
+    <footer className="border-t border-white/5 bg-[#081521] px-6 pb-8 pt-16 text-gray-300">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
         <div>
-          <Link to="/" className="text-white text-xl font-bold tracking-wide">
-            Chemtech <span className="text-blue-400">Specialty</span>
-          </Link>
-          <p className="mt-3 text-sm text-gray-400 leading-relaxed">
+          <Link to="/" className="text-xl font-bold tracking-wide text-white">Chemtech <span className="text-blue-400">Specialty</span></Link>
+          <p className="mt-3 text-sm leading-relaxed text-gray-400">
             Delivering high-performance industrial specialty materials — precision investment casting waxes, release agents, industrial bonding adhesives, and protective coatings for demanding manufacturing environments.
           </p>
-          <div className="mt-4 text-xs text-blue-400 font-semibold tracking-wider uppercase">
-            ISO-Compliant Quality & Custom R&D
-          </div>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-blue-400">ISO-Compliant Quality &amp; Custom R&amp;D</p>
         </div>
-
-        {/* Quick Links */}
-        <div>
-          <h3 className="text-white font-semibold mb-4 text-base">Quick Links</h3>
-          <ul className="space-y-2.5 text-sm">
-            <li><Link to="/" className="hover:text-blue-400 transition">Home</Link></li>
-            <li><Link to="/products" className="hover:text-blue-400 transition">Product Catalogue</Link></li>
-            <li><Link to="/about" className="hover:text-blue-400 transition">About Company</Link></li>
-            <li><Link to="/contact" className="hover:text-blue-400 transition">Contact & RFQ</Link></li>
-          </ul>
-        </div>
-
-        {/* Products - Category Links */}
-        <div>
-          <h3 className="text-white font-semibold mb-4 text-base">Product Categories</h3>
-          <ul className="space-y-2.5 text-sm">
-            <li>
-              <Link to="/investment-casting-wax" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-blue-500 font-mono text-xs">01</span> Investment Casting Waxes
-              </Link>
-            </li>
-            <li>
-              <Link to="/release-agents" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-cyan-400 font-mono text-xs">02</span> Release Agents
-              </Link>
-            </li>
-            <li>
-              <Link to="/adhesives" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-amber-400 font-mono text-xs">03</span> Industrial Adhesives
-              </Link>
-            </li>
-            <li>
-              <Link to="/coatings" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-emerald-400 font-mono text-xs">04</span> Protective Metal Coatings
-              </Link>
-            </li>
-            <li>
-              <Link to="/products" className="hover:text-blue-400 transition flex items-center gap-1.5">
-                <span className="text-purple-400 font-mono text-xs">05</span> All Products Catalogue
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Key Products - Direct Product Links */}
-        <div>
-          <h3 className="text-white font-semibold mb-4 text-base">Key Products</h3>
-          <ul className="space-y-2.5 text-sm">
-            <li><Link to="/investment-casting-wax/filled-wax" className="hover:text-blue-400 transition">Filled Wax</Link></li>
-            <li><Link to="/investment-casting-wax/water-soluble-wax" className="hover:text-blue-400 transition">Water Soluble Wax</Link></li>
-            <li><Link to="/release-agents/rubber-release-agent" className="hover:text-blue-400 transition">Rubber Release Agent</Link></li>
-            <li><Link to="/release-agents/composite-release-agent" className="hover:text-blue-400 transition">Composite Release Agent</Link></li>
-            <li><Link to="/adhesives/rubber-to-metal-adhesive" className="hover:text-blue-400 transition">Rubber-to-Metal Adhesive</Link></li>
-            <li><Link to="/coatings/anti-corrosion-coating" className="hover:text-blue-400 transition">Anti-Corrosion Coating</Link></li>
-            <li><Link to="/coatings/heat-resistant-coating" className="hover:text-blue-400 transition">Heat Resistant Coating</Link></li>
-          </ul>
-        </div>
-
-        {/* Contact Information & Local SEO Signals */}
-        <div>
-          <h3 className="text-white font-semibold mb-4 text-base">Contact & Supply</h3>
-          <address className="not-italic space-y-2.5 text-sm text-gray-300">
-            <p>
-              <span className="text-gray-500 block text-xs uppercase font-medium">Headquarters & Works</span>
-              Shinde House, Sahyadrinagar, Vadner Dumala, Nashik - 422401, Maharashtra, India
-            </p>
-            <p>
-              <span className="text-gray-500 block text-xs uppercase font-medium">Direct Inquiries</span>
-              <a href="mailto:info@chemtechspecialty.com" className="hover:text-blue-400 transition">
-                info@chemtechspecialty.com
-              </a>
-            </p>
-            <p>
-              <span className="text-gray-500 block text-xs uppercase font-medium">Phone</span>
-              <a href="tel:+918668758151" className="hover:text-blue-400 transition">
-                +91 8668758151
-              </a>
-            </p>
-            <p className="text-xs text-gray-400 pt-1">
-              Pan-India distribution & global export capabilities
-            </p>
+        <Column title="Quick Links"><Links items={quickLinks} /></Column>
+        <Column title="Product Categories"><Links items={categories.map((c) => [`/${c.slug}`, c.label])} /></Column>
+        <Column title="Key Products"><Links items={keyProducts} /></Column>
+        <Column title="Contact & Supply">
+          <address className="space-y-2.5 text-sm not-italic">
+            <p>{BUSINESS.street}, {BUSINESS.city} - {BUSINESS.postalCode}, {BUSINESS.region}, India</p>
+            <p><a href={`mailto:${BUSINESS.email}`} className="inline-block py-1 hover:text-blue-400">{BUSINESS.email}</a></p>
+            <p><a href={BUSINESS.phoneHref} className="inline-block py-1 hover:text-blue-400">{BUSINESS.phone}</a></p>
+            <p className="text-xs text-gray-400">Pan-India distribution &amp; global export capabilities</p>
           </address>
-        </div>
-
+        </Column>
       </div>
-
-      {/* Bottom Legal & SEO Footprint */}
-      <div className="border-t border-white/10 mt-12 pt-6 max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-        <div>
-          © {new Date().getFullYear()} Chemtech Specialty. All rights reserved. Precision chemical manufacturing.
-        </div>
-        <div className="flex gap-6">
-          <Link to="/products" className="hover:text-gray-400 transition">Products</Link>
-          <Link to="/about" className="hover:text-gray-400 transition">Company</Link>
-          <Link to="/contact" className="hover:text-gray-400 transition">Request Quote</Link>
-        </div>
-      </div>
+      <p className="mx-auto mt-12 max-w-7xl border-t border-white/10 pt-6 text-xs text-gray-400" suppressHydrationWarning>
+        © {new Date().getFullYear()} Chemtech Specialty. All rights reserved. Precision chemical manufacturing.
+      </p>
     </footer>
   );
-};
-
-export default Footer;
+}

@@ -2,132 +2,51 @@ import { useState } from "react";
 import SEO from "../components/SEO";
 import Hero from "../components/Hero";
 import Products from "../components/Products";
-import CastingJourney from "../components/CastingJourney";
-import ReleaseJourney from "../components/ReleaseJourney";
-import AdhesiveJourney from "../components/AdhesiveJourney";
-import CoatingJourney from "../components/CoatingJourney";
+import Journey from "../components/journey/Journey";
 import Process from "../components/Process";
 import Industries from "../components/Industries";
 import CTA from "../components/CTA";
+import { categories } from "../data/productData";
+import { businessSchema, websiteSchema } from "../lib/site";
 
-const homeSchema = [
-  {
-    "@type": ["Organization", "LocalBusiness"],
-    "@id": "https://chemtechspecialty.com/#organization",
-    name: "Chemtech Specialty",
-    url: "https://chemtechspecialty.com",
-    logo: "https://chemtechspecialty.com/logo.png",
-    image: "https://chemtechspecialty.com/og-image.jpg",
-    description:
-      "Manufacturer and supplier of high-performance investment casting waxes, industrial mold release agents, rubber-to-metal bonding adhesives, and protective metal coatings.",
-    telephone: "+91-8668758151",
-    email: "info@chemtechspecialty.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Shinde House, Sahyadrinagar, Vadner Dumala",
-      addressLocality: "Nashik",
-      addressRegion: "Maharashtra",
-      postalCode: "422401",
-      addressCountry: "IN",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: "19.9975",
-      longitude: "73.7898",
-    },
-    areaServed: [
-      { "@type": "Country", name: "India" },
-      { "@type": "AdministrativeArea", name: "Worldwide" },
-    ],
-    knowsAbout: [
-      "Investment Casting Waxes",
-      "Filled Wax",
-      "Unfilled Wax",
-      "Water Soluble Wax",
-      "Pattern Assembly Sticky Wax",
-      "Foundry Repair Wax",
-      "Industrial Mold Release Agents",
-      "Polyurethane Mold Release",
-      "Rubber-to-Metal Bonding Adhesives",
-      "Friction Material Adhesives",
-      "Anti-Corrosion Metal Coatings",
-      "High-Temperature Heat Resistant Coatings",
-    ],
-  },
-  {
-    "@type": "WebSite",
-    "@id": "https://chemtechspecialty.com/#website",
-    url: "https://chemtechspecialty.com",
-    name: "Chemtech Specialty",
-    publisher: { "@id": "https://chemtechspecialty.com/#organization" },
-    inLanguage: "en-US",
-  },
-];
-
-const CATEGORY_TABS = [
-  { id: "waxes", label: "Investment Casting Waxes", color: "#3B82F6" },
-  { id: "release", label: "Release Agents", color: "#22D3EE" },
-  { id: "adhesives", label: "Industrial Adhesives", color: "#F59E0B" },
-  { id: "coatings", label: "Protective Coatings", color: "#10B981" },
-];
-
-const Home = () => {
-  const [activeTab, setActiveTab] = useState("waxes");
+export default function Home() {
+  const [active, setActive] = useState(categories[0].slug);
 
   return (
     <>
       <SEO
-        title="Chemtech Specialty | Industrial Waxes, Release Agents & Protective Coatings"
-        description="Chemtech Specialty manufactures high-performance investment casting waxes, industrial release agents, rubber-to-metal adhesives, and protective coatings in India. Pan-India supply from Nashik, Maharashtra."
-        canonicalPath="/"
-        schema={homeSchema}
-        keywords="investment casting wax India, filled wax for casting, mold release agent manufacturer, rubber to metal adhesive, anti corrosion coating, industrial specialty chemicals Nashik"
+        title="Chemtech Specialty | Casting Waxes, Release Agents & Coatings"
+        description="Manufacturer of investment casting waxes, mold release agents, rubber-to-metal adhesives and protective coatings in Nashik, India. Pan-India supply. Get a quote."
+        path="/"
+        schema={[businessSchema, websiteSchema]}
       />
-
       <Hero />
       <Products />
 
-      {/* ── 3D INTERACTIVE SIMULATION SHOWCASE ── */}
-      <section className="bg-[#071523] pt-16 border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">
-                3D Interactive Simulations
-              </p>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white">
-                Explore How Chemtech Materials Perform in Your Process
-              </h2>
-            </div>
-            {/* Category Selector Tabs */}
-            <div className="flex flex-wrap gap-2 p-1.5 bg-white/5 border border-white/10 rounded-xl">
-              {CATEGORY_TABS.map((tab) => {
-                const active = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                      active
-                        ? "text-slate-950 shadow-md"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                    }`}
-                    style={{
-                      backgroundColor: active ? tab.color : "transparent",
-                    }}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
+      <section aria-labelledby="simulations-title" className="border-t border-white/5 bg-[#071523] pt-16">
+        <div className="mx-auto mb-8 flex max-w-6xl flex-col justify-between gap-6 px-6 md:flex-row md:items-end">
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-400">3D Interactive Simulations</p>
+            <h2 id="simulations-title" className="text-2xl font-extrabold text-white md:text-3xl">
+              Explore How Chemtech Materials Perform in Your Process
+            </h2>
+          </div>
+          <div className="flex flex-wrap gap-2 rounded-xl border border-white/10 bg-white/5 p-1.5">
+            {categories.map((c) => (
+              <button
+                key={c.slug}
+                type="button"
+                aria-pressed={active === c.slug}
+                onClick={() => setActive(c.slug)}
+                style={{ "--accent": c.accent }}
+                className={`rounded-lg px-3.5 py-2 text-xs font-bold transition ${active === c.slug ? "a-solid text-slate-950" : "text-gray-300 hover:bg-white/5 hover:text-white"}`}
+              >
+                {c.label}
+              </button>
+            ))}
           </div>
         </div>
-        {activeTab === "waxes" && <CastingJourney />}
-        {activeTab === "release" && <ReleaseJourney />}
-        {activeTab === "adhesives" && <AdhesiveJourney />}
-        {activeTab === "coatings" && <CoatingJourney />}
+        <Journey key={active} slug={active} />
       </section>
 
       <Process />
@@ -135,6 +54,4 @@ const Home = () => {
       <CTA />
     </>
   );
-};
-
-export default Home;
+}

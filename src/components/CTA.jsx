@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const CTA = () => {
@@ -16,7 +15,7 @@ const CTA = () => {
         </h2>
 
         {/* Subtext */}
-        <p className="mt-4 text-gray-400 text-sm md:text-base">
+        <p className="mt-4 text-gray-300 text-sm md:text-base">
           Get high-performance waxes, coatings, and adhesives tailored to your exact application.
         </p>
 
